@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Navigator</string>
+
+
+    <!-- EntranceActivity -->
+    <string name="activity_entrance_login_title">Вход</string>
+    <string name="activity_entrance_registration_title">Регистрация</string>
+
+    <!-- fragment_login -->
+    <string name="fragment_login_hello_text_textview">
+        Добро пожаловать в навигационную систему ЮРГПУ(НПИ)
+    </string>
+    <string name="fragment_login_login_textview">Логин</string>
+    <string name="fragment_login_password_textview">Пароль</string>
+    <string name="fragment_login_login_button">Войти</string>
+    <string name="fragment_login_or_textview">или</string>
+    <string name="fragment_login_register_button">Зарегистрироваться</string>
+
+
+    <!-- fragment_registration -->
+    <string name="fragment_registration_name_text">Имя</string>
+    <string name="fragment_registration_fam_text">Фамилия</string>
+    <string name="fragment_registration_otch_text">Отчество</string>
+    <string name="fragment_registration_age_text">Возраст</string>
+    <string name="fragment_registration_tel_text">Номер Телефона</string>
+    <string name="fragment_registration_sex_text">Пол</string>
+    <string name="fragment_registration_registration_button">Зарегистрироваться</string>
+
+    <string-array name="sex">
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+
+    <!-- CameraActivity -->
+    <string name="activity_camera_degree">Градус</string>
+    <string name="activity_camera_steps">Шаги</string>
+
+    <!-- TestStartActivity -->
+    <string name="activity_test_start_hello">
+        Этот экран для разработчиков. Если вы его видите, значит у нас что-то пошло не так.
+    </string>
+
+    <!-- RouteActivity -->
+    <string name="activity_route_title">Навигатор</string>
+    <string name="activity_route_where_are_you">Где вы:</string>
+    <string name="activity_route_destination">Место назначения:</string>
+    <string name="activity_route_find_route">Построить маршрут</string>
+    <string name="activity_route_scan">Отсканируйте QR-код</string>
+    <string name="activity_route_location">Неизвестно</string>
+
+    <string-array name="housing">
+        <item>ЛК</item>
+    </string-array>
+
+    <string-array name="room">
+        <item>101</item>
+        <item>102</item>
+    </string-array>
+</resources>
