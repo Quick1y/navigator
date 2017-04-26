@@ -1,128 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.geo.navigator.route.ui.RouteActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context="com.geo.navigator.route.ui.RouteActivity">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="6dp"
-            android:paddingLeft="6dp"
-            android:paddingTop="6dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/activity_route_image_background"
-                tools:src="@drawable/ic_map_route_default_background"
-                android:background="@color/background_light"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"/>
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="6dp">
 
-            <ImageView
-                android:id="@+id/activity_route_image_drawing"
+                <ImageView
+                    android:id="@+id/activity_route_image_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/background_light"
+                    tools:src="@drawable/qrcode_icon_with_text" />
+
+                <ImageView
+                    android:id="@+id/activity_route_image_drawing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true" />
+
+            </FrameLayout>
+
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"/>
-
-        </FrameLayout>
-
-
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:orientation="vertical">
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="6dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/activity_route_where_are_you"/>
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/activity_route_where_are_you" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="@string/activity_route_location" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/activity_route_button_qr"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="@string/activity_route_location"/>
+                        android:text="@string/activity_route_scan"
+                        android:theme="@style/AccentButton" />
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/activity_route_button_qr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/AccentButton"
-                    android:text="@string/activity_route_scan"/>
+            </android.support.v7.widget.CardView>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp">
-
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:orientation="vertical">
+                android:layout_margin="6dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/activity_route_destination"/>
-
-                <Spinner
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/housing"
-                    android:layout_marginTop="8dp">
-                </Spinner>
+                    android:orientation="vertical"
+                    android:padding="6dp">
 
-                <Spinner
-                    android:id="@+id/activity_route_room_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/room"
-                    android:layout_marginTop="16dp">
-                </Spinner>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_route_destination" />
 
-        </android.support.v7.widget.CardView>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:entries="@array/housing"></Spinner>
 
+                    <Spinner
+                        android:id="@+id/activity_route_room_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:entries="@array/room"></Spinner>
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/activity_route_findway_button"
-            android:layout_width="match_parent"
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/activity_route_findway_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="@dimen/cardview_default_elevation">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/AccentButton"
+            android:layout_gravity="center"
+            android:padding="12dp"
             android:text="@string/activity_route_find_route"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="3dp"/>
-    </LinearLayout>
-
-</ScrollView>
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-medium"/>
+    </FrameLayout>
+</LinearLayout>

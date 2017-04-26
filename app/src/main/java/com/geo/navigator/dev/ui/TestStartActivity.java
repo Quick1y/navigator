@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.geo.navigator.R;
 import com.geo.navigator.camera.ui.CameraActivity;
@@ -27,8 +28,11 @@ public class TestStartActivity extends AppCompatActivity {
         mButtonStartCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = CameraActivity.newIntent(getApplicationContext());
-                startActivity(intent);
+               // Intent intent = CameraActivity.newIntent(getApplicationContext());
+                //startActivity(intent);
+
+                Toast.makeText(getApplicationContext(), "Фича отключена", Toast.LENGTH_SHORT).show();
+
             }
         });
 

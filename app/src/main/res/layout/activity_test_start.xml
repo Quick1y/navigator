@@ -24,19 +24,19 @@
             android:id="@+id/activity_test_start_button_startcamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            tools:text="Button" />
 
         <Button
             android:id="@+id/activity_test_start_button_startlogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            tools:text="Button" />
 
         <Button
             android:id="@+id/activity_test_start_button_startdrawing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            tools:text="Button" />
     </LinearLayout>
 
 </FrameLayout>

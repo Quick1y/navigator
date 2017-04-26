@@ -26,6 +26,12 @@ import com.geo.navigator.camera.helper.CameraHelper;
 
 
 public class CameraActivity extends Activity {
+
+    /**
+     * класс пока не нужен,
+     * но мало ли
+
+
     private static final String TAG = "CameraActivity";
     private final int CAMERA0 = 0;
 
@@ -118,7 +124,7 @@ public class CameraActivity extends Activity {
 
 
         /* Ниже код, регистрирующий слушатели
-        сенсоров для компаса и шагомера */
+        сенсоров для компаса и шагомера *\/
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         //инициализация сенсоров для шагомера и компаса
@@ -132,7 +138,7 @@ public class CameraActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); */
+                WindowManager.LayoutParams.FLAG_FULLSCREEN); *\/
 
     }
 
@@ -194,4 +200,5 @@ public class CameraActivity extends Activity {
         }
     }
 
+    */
 }

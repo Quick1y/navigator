@@ -45,8 +45,11 @@
     <string name="activity_route_where_are_you">Где вы:</string>
     <string name="activity_route_destination">Место назначения:</string>
     <string name="activity_route_find_route">Построить маршрут</string>
-    <string name="activity_route_scan">Отсканируйте QR-код</string>
+    <string name="activity_route_scan">Сканировать QR-код</string>
     <string name="activity_route_location">Неизвестно</string>
+    <string name="activity_route_need_permission">
+        Для сканирования QR-кода необходимо разрешить использование камеры
+    </string>
 
     <string-array name="housing">
         <item>ЛК</item>

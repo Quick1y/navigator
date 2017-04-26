@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.geo.navigator.R;
+import com.geo.navigator.qrscanner.ui.QRScannerActivity;
 import com.geo.navigator.route.helper.DrawHelper;
 import com.geo.navigator.route.model.Point;
 
@@ -22,10 +25,13 @@ import java.util.ArrayList;
 
 public class RouteActivity extends AppCompatActivity {
     private static final String TAG = "RouteActivity";
+    public static final int REQUEST_CODE_QR = 1;
 
     private ImageView mImageViewDrawing;
     private ImageView mImageViewBackground;
-    private Button mFindWayButton;
+    private FrameLayout mFindWayButton;
+    private Button mScanQRCode;
+
     private Spinner mRoomSpinner;
 
     //вызывать для запуска интентом
@@ -44,9 +50,11 @@ public class RouteActivity extends AppCompatActivity {
 
         //устанавливает фон
         mImageViewBackground = (ImageView) findViewById(R.id.activity_route_image_background);
-        mImageViewBackground.setImageDrawable(getDrawable(R.drawable.ic_map_route_default_background));
+        mImageViewBackground.setImageDrawable(getResources()
+                .getDrawable(R.drawable.qrcode_icon_with_text));
 
-        mFindWayButton = (Button) findViewById(R.id.activity_route_findway_button);
+        //кнопка Построить маршрут
+        mFindWayButton = (FrameLayout) findViewById(R.id.activity_route_findway_button);
         mFindWayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,8 +67,47 @@ public class RouteActivity extends AppCompatActivity {
             }
         });
 
+        //кнопка Сканировать QR-code
+        mScanQRCode = (Button) findViewById(R.id.activity_route_button_qr);
+        mScanQRCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //вызов сканера
+                Intent intent = new Intent(getApplicationContext(), QRScannerActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_QR);
+            }
+        });
+
+
         mRoomSpinner = (Spinner) findViewById(R.id.activity_route_room_spinner);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK){
+            switch (resultCode) {
+                case QRScannerActivity.RESULT_PERMISSION_DENIED: {
+                    //Если пользователь не дал разрешение на использование камеры
+                    Toast.makeText(this,
+                            getString(R.string.activity_route_need_permission),
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+
+                default: return;
+            }
+        }
+
+        //обработка результата сканирования qr-кода
+        if (requestCode == REQUEST_CODE_QR){
+            if(data != null){
+                String qr_data = data.getStringExtra(QRScannerActivity.EXTRA_QR_DATA);
+                Toast.makeText(this, qr_data, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     //рассчет пути
     private ArrayList<Point> findWay(Point pointA, Point pointB){

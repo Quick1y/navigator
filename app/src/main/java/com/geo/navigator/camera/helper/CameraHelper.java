@@ -28,6 +28,9 @@ import java.util.Arrays;
 
 public class CameraHelper {
 
+    /** для этого класса нужен minSDK 21+
+
+
     private static final String TAG = "CameraHelper";
     private Context mContext;
 
@@ -170,5 +173,5 @@ public class CameraHelper {
             Log.e(TAG, "Error with camera with id: " + mCameraDevice.getId());
         }
     }
-
+ */
 }

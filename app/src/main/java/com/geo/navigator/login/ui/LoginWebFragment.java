@@ -20,6 +20,7 @@ import android.webkit.WebViewClient;
 
 import com.geo.navigator.R;
 import com.geo.navigator.camera.ui.CameraActivity;
+import com.geo.navigator.route.ui.RouteActivity;
 
 
 public class LoginWebFragment extends Fragment {
@@ -68,7 +69,7 @@ public class LoginWebFragment extends Fragment {
                         return false; //страница регистрации
                     }
                     case LOGIN_SUCCESS_URL: {  //вошел удачно
-                        Intent intent = CameraActivity.newIntent(getContext());
+                        Intent intent = RouteActivity.newIntent(getContext());
                         startActivity(intent);
                         return true;
                     }

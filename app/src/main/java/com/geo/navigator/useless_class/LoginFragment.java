@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.geo.navigator.R;
 import com.geo.navigator.camera.ui.CameraActivity;
+import com.geo.navigator.route.ui.RouteActivity;
 
 
 /**
@@ -39,8 +41,8 @@ public class LoginFragment extends Fragment {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //вызов CameraActivity по нажатию кнопки
-                Intent intent = CameraActivity.newIntent(getContext());
+                //вызов RouteActivity по нажатию кнопки
+                Intent intent = RouteActivity.newIntent(getContext());
                 startActivity(intent);
 
             }
