@@ -1,5 +1,13 @@
 package com.geo.navigator.qrscanner.ui;
 
+/**
+ * Created by nikita on 12.04.17.
+ *
+ * Считывние QR-кодов осуществляется благодаря
+ * библиотеке ZXing
+ * https://github.com/dm77/barcodescanner
+ */
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,12 +25,6 @@ import com.google.zxing.Result;
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
-/**
- * Считывние QR-кодов осуществляется благодаря
- * библиотеке ZXing
- * https://github.com/dm77/barcodescanner
- * */
 
 
 public class QRScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {

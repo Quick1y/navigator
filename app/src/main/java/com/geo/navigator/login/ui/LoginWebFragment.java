@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,10 +27,9 @@ import com.geo.navigator.route.ui.RouteActivity;
 public class LoginWebFragment extends Fragment {
 
     private static final String TAG = "LoginWebFragment";
-    private static final String LOGIN_URL = "http://geo.websokol.ru/wp-login.php";
-    private static final String REGISTRATION_URL = "http://geo.websokol.ru/wp-login.php?action=register";
-    private static final String LOGIN_SUCCESS_URL = "http://geo.websokol.ru/wp-admin/profile.php";
-
+    private static final String LOGIN_URL = "http://eyesnpi.ru/wp-login.php";
+    private static final String REGISTRATION_URL = "http://eyesnpi.ru/wp-login.php?action=register";
+    private static final String LOGIN_SUCCESS_URL = "http://eyesnpi.ru/wp-admin/";
 
     private WebView webView;
 
@@ -50,6 +50,7 @@ public class LoginWebFragment extends Fragment {
         }
 
         webView = (WebView) view.findViewById(R.id.fragment_web_login_WebView);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(LOGIN_URL);
 
         //отслеживание изменения URL у WebView

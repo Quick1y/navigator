@@ -50,13 +50,6 @@
     <string name="activity_route_need_permission">
         Для сканирования QR-кода необходимо разрешить использование камеры
     </string>
+    <string name="activity_route_choose_loc_and_dest_point">Выберите точку отправления и назначения</string>
 
-    <string-array name="housing">
-        <item>ЛК</item>
-    </string-array>
-
-    <string-array name="room">
-        <item>101</item>
-        <item>102</item>
-    </string-array>
 </resources>
