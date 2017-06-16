@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Navigator</string>
 
+    <!-- Shared preferences -->
+    <string name="preference_file_key">preference_file_key</string>
+    <string name="preference_login">user_login</string>
 
     <!-- EntranceActivity -->
     <string name="activity_entrance_login_title">Вход</string>
@@ -41,6 +44,7 @@
     </string>
 
     <!-- RouteActivity -->
+    <string name="activity_route_user">Пользователь</string>
     <string name="activity_route_title">Навигатор</string>
     <string name="activity_route_where_are_you">Где вы:</string>
     <string name="activity_route_destination">Место назначения:</string>

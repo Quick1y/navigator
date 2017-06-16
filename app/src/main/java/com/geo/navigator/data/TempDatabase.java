@@ -1,4 +1,4 @@
-package com.geo.navigator.database;
+package com.geo.navigator.data;
 
 import com.geo.navigator.route.model.Edge;
 import com.geo.navigator.route.model.Map;

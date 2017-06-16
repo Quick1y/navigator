@@ -15,12 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.geo.navigator.R;
-import com.geo.navigator.camera.ui.CameraActivity;
+import com.geo.navigator.network.MyJavascriptInterface;
 import com.geo.navigator.route.ui.RouteActivity;
 
 
@@ -30,6 +29,9 @@ public class LoginWebFragment extends Fragment {
     private static final String LOGIN_URL = "http://eyesnpi.ru/wp-login.php";
     private static final String REGISTRATION_URL = "http://eyesnpi.ru/wp-login.php?action=register";
     private static final String LOGIN_SUCCESS_URL = "http://eyesnpi.ru/wp-admin/";
+
+    private static final String INTERFACE_NAME = "HTMLOUT";
+    private static final String GET_URL_SCRIPT ="javascript:window."+INTERFACE_NAME+".processHTML(document.getElementById('user_login').value);";
 
     private WebView webView;
 
@@ -49,8 +51,11 @@ public class LoginWebFragment extends Fragment {
             }
         }
 
+        final MyJavascriptInterface myjsinterface = new MyJavascriptInterface(getActivity());
+
         webView = (WebView) view.findViewById(R.id.fragment_web_login_WebView);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(myjsinterface, INTERFACE_NAME);
         webView.loadUrl(LOGIN_URL);
 
         //отслеживание изменения URL у WebView
@@ -70,6 +75,7 @@ public class LoginWebFragment extends Fragment {
                         return false; //страница регистрации
                     }
                     case LOGIN_SUCCESS_URL: {  //вошел удачно
+                        webView.loadUrl(GET_URL_SCRIPT); // инъекция скрипта
                         Intent intent = RouteActivity.newIntent(getContext());
                         startActivity(intent);
                         return true;

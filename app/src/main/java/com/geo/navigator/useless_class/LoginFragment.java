@@ -36,6 +36,7 @@ public class LoginFragment extends Fragment {
         //Устанавливает заголовок Activity
         getActivity().setTitle(R.string.activity_entrance_login_title);
 
+        /*
         //кнопка войти
         mLoginButton = (Button) view.findViewById(R.id.fragment_login_login_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +59,7 @@ public class LoginFragment extends Fragment {
         });
         mRegistrationButton.setClickable(false);  // пока так
 
-
+*/
 
         return view;
     }

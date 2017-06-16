@@ -9,6 +9,7 @@ public class Point {
     private float mY;
     private int mId;
     private int mMapId;
+    private int numOnGraph;
     private String mDescription;
     private boolean mVisibleOnMap;
 

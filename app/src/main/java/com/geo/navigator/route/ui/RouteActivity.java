@@ -6,6 +6,7 @@ package com.geo.navigator.route.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geo.navigator.R;
-import com.geo.navigator.database.TempDatabase;
+import com.geo.navigator.data.TempDatabase;
 import com.geo.navigator.qrscanner.ui.QRScannerActivity;
 import com.geo.navigator.route.dijkstra.DijkstrasAlgorithm;
 import com.geo.navigator.route.helper.DrawHelper;
@@ -49,6 +50,7 @@ public class RouteActivity extends AppCompatActivity {
     ArrayList<Point> mPoints; // Все доступные точки назначения
     private Point mStartPoint;  // Начальная и конечная
     private Point mFinishPoint; // точки
+    private String userLogin;   // Логин пользователя
 
     //вызывать для запуска интентом
     public static Intent newIntent(Context context){
@@ -124,7 +126,7 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Map map = mMaps.get(position);
-                ArrayAdapter<String> roomAdapter = new ArrayAdapter<String>(getBaseContext(),
+                ArrayAdapter<String> roomAdapter = new ArrayAdapter<>(getBaseContext(),
                         android.R.layout.simple_spinner_dropdown_item,
                         TempDatabase.getPointsDescsForMap(map));
                 mRoomSpinner.setAdapter(roomAdapter);
@@ -139,6 +141,14 @@ public class RouteActivity extends AppCompatActivity {
             }
         });
 
+        //достаем из SharedPreferences логин пользователя
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.preference_file_key), MODE_PRIVATE);
+        userLogin = sharedPref.getString(getString(R.string.preference_login),
+                getString(R.string.activity_route_user));
+        Toast.makeText(this, "Добро подаловать, " + userLogin, Toast.LENGTH_SHORT).show();
+
+
 
 
 
@@ -151,8 +161,11 @@ public class RouteActivity extends AppCompatActivity {
                 mWhereAreYouTextView.setText(mStartPoint.getDescription());
                 mImageViewBackground.setImageDrawable(getResources()
                         .getDrawable(R.drawable.korpus1));
+
             }
         });
+
+
     }
 
     @Override
