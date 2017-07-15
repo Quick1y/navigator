@@ -7,10 +7,16 @@ package com.geo.navigator.route.model;
 public class Map {
     private int mId;
     private String mDescription;
+    private int mImageId;
 
-    public Map(int id, String description){
+    public Map(int id, String description, int imageId){
         mId = id;
         mDescription = description;
+        mImageId = imageId;
+    }
+
+    public int getmImageId() {
+        return mImageId;
     }
 
     public int getId() {

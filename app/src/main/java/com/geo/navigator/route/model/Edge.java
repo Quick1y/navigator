@@ -7,34 +7,43 @@ package com.geo.navigator.route.model;
  */
 
 public class Edge {
-    private int idPointA;
-    private int idPointB;
-    private int weight;
-    private String description; // возможно, понадобится описание
+    private int mIdPointA;
+    private int mIdPointB;
+    private int mWeight;
+    private int mId_map;
+    private String mDescription; // возможно, понадобится описание
 
-    public Edge(int idA, int idB, int weight){
-        idPointA = idA;
-        idPointB = idB;
-        this.weight = weight;
+    public Edge(int idA, int idB, int weight, int id_map, String desc){
+        mIdPointA = idA;
+        mIdPointB = idB;
+        this.mWeight = weight;
+        mId_map = id_map;
+        mDescription = desc;
     }
 
     public int getIdPointA() {
-        return idPointA;
+        return mIdPointA;
     }
 
     public int getIdPointB() {
-        return idPointB;
+        return mIdPointB;
     }
 
     public int getWeight() {
-        return weight;
+        return mWeight;
+    }
+
+    public String getDescription(){return mDescription;}
+
+    public int getId_map() {
+        return mId_map;
     }
 
     /**
      * Преобразует матрицу весов в виде двумерного массива int
      * в матрицу ребер типа Edge
      */
-    public static Edge[][] fromWeightMatrix(int[][] weightMatrix){
+    public static Edge[][] fromWeightMatrix(int[][] weightMatrix, int idmap){
         int wLength = weightMatrix.length;
         int hLength = weightMatrix[0].length; //Пока предполагаем, что матрица квадратная. В идеале надо искать самый длинный массив
 
@@ -42,7 +51,7 @@ public class Edge {
 
         for(int h = 0; h < hLength; h++){
             for (int w = 0; w < wLength; w++){
-                edgesMatrix[h][w] = new Edge(h,w,weightMatrix[h][w]);
+                edgesMatrix[h][w] = new Edge(h,w,weightMatrix[h][w], idmap,"from weight matrix");
             }
         }
 

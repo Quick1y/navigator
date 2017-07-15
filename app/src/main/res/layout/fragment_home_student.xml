@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.geo.navigator.home.ui.HomeActivity">
+
+
+    <FrameLayout
+        android:id="@+id/activity_home_navigate_button_fl"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:padding="6dp"
+        android:animateLayoutChanges="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_place_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="@string/activity_home_navigate"
+            android:textSize="8pt"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="48dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:src="@drawable/ic_chevron_right_24dp"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_light"/>
+
+    <FrameLayout
+        android:id="@+id/activity_home_news_button_fl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="6dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_fiber_new"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="@string/activity_home_news"
+            android:textSize="8pt"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="48dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:src="@drawable/ic_chevron_right_24dp"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_light"/>
+
+    <FrameLayout
+        android:id="@+id/activity_home_progress_button_fl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="6dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_insert_chart_"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="@string/activity_home_progress"
+            android:textSize="8pt"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="48dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:src="@drawable/ic_chevron_right_24dp"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_light"/>
+
+    <FrameLayout
+        android:id="@+id/activity_home_schedule_button_fl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="6dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_event_note"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="@string/activity_home_schedule"
+            android:textSize="8pt"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="48dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:src="@drawable/ic_chevron_right_24dp"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_light"/>
+
+</LinearLayout>

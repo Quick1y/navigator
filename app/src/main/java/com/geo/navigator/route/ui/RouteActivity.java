@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geo.navigator.R;
+import com.geo.navigator.data.DatabaseHelper;
+import com.geo.navigator.data.MyDatabaseProvider;
 import com.geo.navigator.data.TempDatabase;
 import com.geo.navigator.qrscanner.ui.QRScannerActivity;
 import com.geo.navigator.route.dijkstra.DijkstrasAlgorithm;
@@ -28,6 +32,9 @@ import com.geo.navigator.route.helper.DrawHelper;
 import com.geo.navigator.route.model.Edge;
 import com.geo.navigator.route.model.Map;
 import com.geo.navigator.route.model.Point;
+import com.geo.navigator.utils.MyJSONParser;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -47,22 +54,25 @@ public class RouteActivity extends AppCompatActivity {
     private TextView mWhereAreYouTextView;
 
     ArrayList<Map> mMaps;  // Все доступные карты
-    ArrayList<Point> mPoints; // Все доступные точки назначения
+    Point[] mPoints; // Все доступные точки назначения
+
+    private Map mCurrentMap;
     private Point mStartPoint;  // Начальная и конечная
     private Point mFinishPoint; // точки
-    private String userLogin;   // Логин пользователя
 
     //вызывать для запуска интентом
-    public static Intent newIntent(Context context){
+    public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, RouteActivity.class);
         return intent;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         setTitle(getString(R.string.activity_route_title));
+
 
         mMaps = TempDatabase.getMaps(); //получаем список карт
 
@@ -78,7 +88,7 @@ public class RouteActivity extends AppCompatActivity {
         mFindWayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStartPoint != null && mFinishPoint != null){
+                if (mStartPoint != null && mFinishPoint != null) {
                     ArrayList<Point> way = findWay(mStartPoint, mFinishPoint);
                     drawWay(way);
                 } else {
@@ -105,7 +115,7 @@ public class RouteActivity extends AppCompatActivity {
         mRoomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mFinishPoint = mPoints.get(position); // устанавливает точку назначения
+                mFinishPoint = mPoints[position]; // устанавливает точку назначения
             }
 
             @Override
@@ -125,6 +135,15 @@ public class RouteActivity extends AppCompatActivity {
         mMapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                /********************************
+                 *
+                 * Здесь нужно сделать загрузку mPoints и  mMaps не из бд, а откуда-то, где они
+                 * буду храниться с самого начала и не требовать соединения с инетом
+                 *
+                 ******************************/
+
+
                 Map map = mMaps.get(position);
                 ArrayAdapter<String> roomAdapter = new ArrayAdapter<>(getBaseContext(),
                         android.R.layout.simple_spinner_dropdown_item,
@@ -132,7 +151,7 @@ public class RouteActivity extends AppCompatActivity {
                 mRoomSpinner.setAdapter(roomAdapter);
                 mRoomSpinner.refreshDrawableState();
 
-                mPoints = TempDatabase.getPointsForMap(map); //загружает все точки назначения для этой карты
+                mPoints = MyDatabaseProvider.getPointsForMap(getApplicationContext(), map.getId()); //загружает все точки назначения для этой карты
             }
 
             @Override
@@ -141,36 +160,24 @@ public class RouteActivity extends AppCompatActivity {
             }
         });
 
-        //достаем из SharedPreferences логин пользователя
-        SharedPreferences sharedPref = getSharedPreferences(
-                getString(R.string.preference_file_key), MODE_PRIVATE);
-        userLogin = sharedPref.getString(getString(R.string.preference_login),
-                getString(R.string.activity_route_user));
-        Toast.makeText(this, "Добро подаловать, " + userLogin, Toast.LENGTH_SHORT).show();
-
-
-
-
 
         //Устанавливает фиктивное местоположение по клику
         mWhereAreYouTextView = (TextView) findViewById(R.id.activity_route_where_are_you_text);
         mWhereAreYouTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStartPoint = TempDatabase.getPoint(tempIdMap, tempIdPoint);
-                mWhereAreYouTextView.setText(mStartPoint.getDescription());
-                mImageViewBackground.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.korpus1));
-
+                mCurrentMap = TempDatabase.getMap(tempIdMap);
+                // mStartPoint = TempDatabase.getPoint(tempIdMap, tempIdPoint);
+                mStartPoint = MyDatabaseProvider.getPoint(getApplicationContext(), tempIdMap, tempIdPoint);
+                setStartPoint();
             }
         });
-
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK){
+        if (resultCode != RESULT_OK) {
             switch (resultCode) {
                 case QRScannerActivity.RESULT_PERMISSION_DENIED: {
                     //Если пользователь не дал разрешение на использование камеры
@@ -181,28 +188,44 @@ public class RouteActivity extends AppCompatActivity {
                     return;
                 }
 
-                default: return;
+                default:
+                    return;
             }
         }
 
         //обработка результата сканирования qr-кода
-        if (requestCode == REQUEST_CODE_QR){
-            if(data != null){
+        if (requestCode == REQUEST_CODE_QR) {
+            if (data != null) {
                 String qr_data = data.getStringExtra(QRScannerActivity.EXTRA_QR_DATA);
-                Toast.makeText(this, qr_data, Toast.LENGTH_SHORT).show();
 
-               // mStartPoint = TempDatabase.getPoint(tempIdMap, tempIdPoint);
-               // mWhereAreYouTextView.setText(mStartPoint.getDescription());
+                try {
+                    mStartPoint = MyJSONParser.getPointToQR(this, qr_data);        // получем текущуюю точку
+                    mCurrentMap = MyDatabaseProvider.getMap(this, mStartPoint.getMapId()); // и карту
+                    setStartPoint();
+                } catch (JSONException e) {
+                    String toastMessage = getString(R.string.activity_route_json_fail);
+                    Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             }
         }
     }
 
+    private void setStartPoint() {
+        String messToast = getString(R.string.activity_route_location_ok);
+        Toast.makeText(this, messToast, Toast.LENGTH_SHORT).show();
+
+        mWhereAreYouTextView.setText(mStartPoint.getDescription());
+        mImageViewBackground.setImageDrawable(getResources()
+                .getDrawable(mCurrentMap.getmImageId()));
+    }
+
 
     //рассчет пути
-    private ArrayList<Point> findWay(Point pointA, Point pointB){
+    private ArrayList<Point> findWay(Point pointA, Point pointB) {
         ArrayList<Point> points = new ArrayList<>();
 
-        Edge[][] edges = TempDatabase.getEdges(); // получаем матрицу переходов
+        Edge[][] edges = MyDatabaseProvider.getEdgesMatrix(this, mCurrentMap.getId()); // получаем матрицу переходов
 
         DijkstrasAlgorithm dAlgorithm = new DijkstrasAlgorithm(edges);
 
@@ -216,8 +239,8 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     //рисует путь и отправляет его на экран
-    private void drawWay(ArrayList<Point> pointsList){
-        Bitmap bitmap = DrawHelper.drawWay(pointsList, getResources().getColor(R.color.colorPrimary));
+    private void drawWay(ArrayList<Point> pointsList) {
+        Bitmap bitmap = DrawHelper.drawWay(pointsList, getResources().getColor(R.color.colorAccent));
         mImageViewDrawing.setImageBitmap(bitmap);
     }
 

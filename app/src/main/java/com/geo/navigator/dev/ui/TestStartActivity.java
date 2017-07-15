@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.geo.navigator.R;
-import com.geo.navigator.camera.ui.CameraActivity;
-import com.geo.navigator.login.ui.EntranceActivity;
+import com.geo.navigator.browser.ui.BrowserActivity;
+import com.geo.navigator.home.ui.HomeActivity;
 import com.geo.navigator.route.ui.RouteActivity;
 
 public class TestStartActivity extends AppCompatActivity {
@@ -17,6 +17,7 @@ public class TestStartActivity extends AppCompatActivity {
     private Button mButtonStartCamera;
     private Button mButtonStartLogin;
     private Button mButtonStartDrawing;
+    private Button mButtonStartHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,12 @@ public class TestStartActivity extends AppCompatActivity {
         });
 
         mButtonStartLogin = (Button) findViewById(R.id.activity_test_start_button_startlogin);
-        mButtonStartLogin.setText("EntranceActivity");
+        mButtonStartLogin.setText("BrowserActivity");
         mButtonStartLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = EntranceActivity.newIntent(getApplicationContext());
+                Intent intent = BrowserActivity.newIntent(getApplicationContext(),
+                        BrowserActivity.LOGIN_URL);
                 startActivity(intent);
             }
         });
@@ -52,6 +54,16 @@ public class TestStartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = RouteActivity.newIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+
+        mButtonStartDrawing = (Button) findViewById(R.id.activity_test_start_button_starthome);
+        mButtonStartDrawing.setText("HomeActivity");
+        mButtonStartDrawing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = HomeActivity.newIntent(getApplicationContext());
                 startActivity(intent);
             }
         });

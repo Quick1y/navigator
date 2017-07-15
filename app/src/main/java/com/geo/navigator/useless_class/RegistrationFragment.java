@@ -16,7 +16,7 @@ import com.geo.navigator.R;
  */
 
 public class RegistrationFragment extends Fragment {
-
+/*
     private static final String TAG = "RegistrationFragment";
     private Button mRegistrationButton;
 
@@ -37,5 +37,5 @@ public class RegistrationFragment extends Fragment {
 
         return view;
     }
-
+*/
 }

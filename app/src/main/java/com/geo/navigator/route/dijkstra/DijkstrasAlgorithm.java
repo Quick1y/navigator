@@ -1,6 +1,12 @@
 package com.geo.navigator.route.dijkstra;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.geo.navigator.data.MyDatabaseProvider;
+import com.geo.navigator.data.TempDatabase;
 import com.geo.navigator.route.model.Edge;
+import com.geo.navigator.route.model.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +19,13 @@ import java.util.Map;
  *     http://old.exponenta.ru/soft/mathcad/stud25/index.asp
  */
 public class DijkstrasAlgorithm {
+    private static final String TAG = "DijkstrasAlgorithm";
     private Map<Integer, Integer> mPointsId;      // Map<Номер точки, Id точки>
     private Map<Integer, Integer> mPointsNumbers; // Map<Id точки, Номер точки>
                                                   // Содержат соответствие точки и ее номера в алгоритме
 
     private Edge[][] mEdges; //Матрица рёбер
+
 
     public DijkstrasAlgorithm(Edge[][] edges){
         mEdges = edges;
@@ -29,10 +37,12 @@ public class DijkstrasAlgorithm {
             mPointsNumbers.put(edges[i][0].getIdPointA(),i);
             mPointsId.put(i, edges[i][0].getIdPointA());
 
-            System.out.println(i + "   " + edges[i][0].getIdPointA());
+            Log.d(TAG, i + "   " + edges[i][0].getIdPointA());
         }
 
     }
+
+
 
 
     /**

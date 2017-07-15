@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/route_menu_fil_db_points"
+        android:title="Заполнить точки бд"/>
+
+    <item
+        android:id="@+id/route_menu_fil_db_edges"
+        android:title="Заполнить дуги"/>
+</menu>

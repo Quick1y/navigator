@@ -5,28 +5,32 @@ package com.geo.navigator.route.model;
  */
 
 public class Point {
-    private float mX;
-    private float mY;
+    private int mX;
+    private int mY;
     private int mId;
     private int mMapId;
-    private int numOnGraph;
+  //  private int mNumOnGraph;
     private String mDescription;
     private boolean mVisibleOnMap;
+    private int mMeta;
 
-    public Point(float x, float y, int id, int mapId, String description, boolean visibleOnMap){
+    public Point(int x, int y, int id, int mapId, String description,
+                 boolean visibleOnMap, int meta){
         mX = x;
         mY = y;
         mId = id;
         mMapId = mapId;
         mDescription = description;
         mVisibleOnMap = visibleOnMap;
+      //  mNumOnGraph = numOnGraph;
+        mMeta = meta;
     }
 
-    public float getX() {
+    public int getX() {
         return mX;
     }
 
-    public float getY() {
+    public int getY() {
         return mY;
     }
 
@@ -45,4 +49,10 @@ public class Point {
     public boolean isVisibleOnMap() {
         return mVisibleOnMap;
     }
+
+    public int getMeta(){
+        return mMeta;
+    }
+
+  //  public int getNumOnGraph(){return mNumOnGraph;};
 }

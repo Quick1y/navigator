@@ -1,28 +1,10 @@
-package com.geo.navigator.camera.ui;
+package com.geo.navigator.useless_class.camera.ui;
 
 /**
  * Created by nikita on 11.04.17.
  */
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.hardware.camera2.CameraManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.TextureView;
-import android.widget.TextView;
-
-import com.geo.navigator.R;
-import com.geo.navigator.camera.helper.CameraHelper;
 
 
 public class CameraActivity extends Activity {

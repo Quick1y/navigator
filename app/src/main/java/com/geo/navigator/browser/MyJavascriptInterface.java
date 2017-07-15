@@ -1,4 +1,4 @@
-package com.geo.navigator.network;
+package com.geo.navigator.browser;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,7 +32,7 @@ public class MyJavascriptInterface {
         SharedPreferences sp = mContext.getSharedPreferences(mContext.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(mContext.getString(R.string.preference_login), userLogin);
+        editor.putString(mContext.getString(R.string.preference_user_login), userLogin);
         editor.commit();
 
     }

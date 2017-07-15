@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.geo.navigator.home.ui.HomeActivity"
+    android:orientation="vertical"
+    android:layout_margin="3dp">
+
+    <FrameLayout
+        android:layout_margin="3dp"
+        android:id="@+id/activity_home_navigate_button_fl"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/background_light"
+        android:padding="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:text="@string/activity_home_navigate"
+            android:textSize="8pt"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_margin="3dp"
+
+            android:id="@+id/activity_home_news_button_fl"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@color/background_light"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:text="@string/activity_home_news"
+                android:textSize="8pt"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_margin="3dp"
+
+            android:id="@+id/activity_home_schedule_button_fl"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@color/background_light"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:text="@string/activity_home_schedule"
+                android:textSize="8pt"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

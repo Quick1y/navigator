@@ -1,29 +1,8 @@
-package com.geo.navigator.camera.helper;
+package com.geo.navigator.useless_class.camera.helper;
 
 /**
  * Created by nikita on 11.04.17.
  */
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.util.Size;
-import android.view.Surface;
-import android.view.TextureView;
-
-import java.util.Arrays;
 
 
 public class CameraHelper {

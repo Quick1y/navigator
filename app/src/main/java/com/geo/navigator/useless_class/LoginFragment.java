@@ -1,7 +1,6 @@
 package com.geo.navigator.useless_class;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.geo.navigator.R;
-import com.geo.navigator.camera.ui.CameraActivity;
-import com.geo.navigator.route.ui.RouteActivity;
 
 
 /**
@@ -22,7 +18,7 @@ import com.geo.navigator.route.ui.RouteActivity;
  */
 
 public class LoginFragment extends Fragment {
-
+/*
     private static final String TAG = "LoginFragment";
 
     private Button mLoginButton;
@@ -30,13 +26,13 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.useless.fragment_login, container, false);
 
         //Устанавливает заголовок Activity
         getActivity().setTitle(R.string.activity_entrance_login_title);
 
-        /*
+
         //кнопка войти
         mLoginButton = (Button) view.findViewById(R.id.fragment_login_login_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +55,13 @@ public class LoginFragment extends Fragment {
         });
         mRegistrationButton.setClickable(false);  // пока так
 
-*/
 
         return view;
     }
 
 
     //Запуск фрагмента "Регистрация"
-    private void startFragmentRegistration(){
+    private void startFragmentRegistration() {
         Log.i(TAG, "startFragmentRegistration() called");
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -76,5 +71,5 @@ public class LoginFragment extends Fragment {
                 .commit();
     }
 
-
+ */
 }
