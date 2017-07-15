@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".useless_class.camera.ui.CameraActivity">
+    tools:context=".zzz_useless_class.camera.ui.CameraActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
