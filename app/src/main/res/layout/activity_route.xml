@@ -67,8 +67,9 @@
                             android:id="@+id/activity_route_where_are_you_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
+                            android:layout_marginLeft="6dp"
                             android:text="@string/activity_route_location" />
+
                     </LinearLayout>
 
                     <Button
@@ -99,16 +100,30 @@
                         android:text="@string/activity_route_destination" />
 
                     <Spinner
-                        android:id="@+id/activity_route_map_spinner"
+                        android:id="@+id/activity_route_object_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"/>
 
                     <Spinner
-                        android:id="@+id/activity_route_room_spinner"
+                        android:id="@+id/activity_route_building_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"/>
+
+                    <Spinner
+                        android:id="@+id/activity_route_point_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"/>
+
+                    <ImageButton
+                        android:id="@+id/activity_route_update_spinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_refresh"
+                        android:layout_gravity="center"
+                        android:background="@color/background_alpha0"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

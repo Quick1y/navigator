@@ -1,4 +1,4 @@
-package com.geo.navigator.UI;
+package com.geo.navigator.UI.Home;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

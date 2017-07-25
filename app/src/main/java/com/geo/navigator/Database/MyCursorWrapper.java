@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.geo.navigator.Model.Edge;
+import com.geo.navigator.Model.Map;
 import com.geo.navigator.Model.Point;
 
 /**
@@ -36,6 +37,14 @@ public class MyCursorWrapper extends CursorWrapper {
         String desc = getString(getColumnIndex(DatabaseTable.Column.EDGES_DESC));
 
         return new Edge(idA, idB, weight, idMap, desc);
+    }
+
+    public Map getMap(){
+        int id_map = getInt(getColumnIndex(DatabaseTable.Column.MAPS_ID));
+        String desc = getString(getColumnIndex(DatabaseTable.Column.MAPS_DESC));
+        String img_path = getString(getColumnIndex(DatabaseTable.Column.MAPS_IMG_PATH));
+
+        return new Map(id_map,desc,img_path);
     }
 
 }

@@ -54,5 +54,9 @@ public class Point {
         return mMeta;
     }
 
+    public static SimplePoint toLocalPoint(Point point){
+        return new SimplePoint(point.getId(), point.getMapId(), point.getDescription());
+    }
+
   //  public int getNumOnGraph(){return mNumOnGraph;};
 }

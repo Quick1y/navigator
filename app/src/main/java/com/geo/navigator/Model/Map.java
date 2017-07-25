@@ -7,16 +7,20 @@ package com.geo.navigator.Model;
 public class Map {
     private int mId;
     private String mDescription;
-    private int mImageId;
+    private String mImagePath;
 
-    public Map(int id, String description, int imageId){
+    public Map(int id, String description, String imagePath){
         mId = id;
         mDescription = description;
-        mImageId = imageId;
+        mImagePath = imagePath;
     }
 
-    public int getmImageId() {
-        return mImageId;
+    public String getImagePath() {
+        return mImagePath;
+    }
+
+    public void setImagePath(String path) {
+        mImagePath = path;
     }
 
     public int getId() {
@@ -30,5 +34,9 @@ public class Map {
     @Override
     public String toString() {
         return mDescription;
+    }
+
+    public static LocalMap toLocalMap(Map map){
+        return new LocalMap(map.getId(), map.getDescription());
     }
 }

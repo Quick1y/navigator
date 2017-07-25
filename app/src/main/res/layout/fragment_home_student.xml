@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.geo.navigator.UI.HomeActivity">
+    tools:context="com.geo.navigator.UI.Home.HomeActivity">
 
 
     <FrameLayout
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
-            android:src="@drawable/ic_event_note"/>
+            android:src="@drawable/ic_event_note_zzz"/>
 
         <TextView
             android:layout_width="wrap_content"

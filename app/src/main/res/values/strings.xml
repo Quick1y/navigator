@@ -62,21 +62,52 @@
     <string name="activity_route_json_fail">Данной точки не существует</string>
     <string name="activity_route_location_ok">Ваше положение определено!</string>
 
+    <string name="activity_route_select_object">Выберите объект</string>
+    <string name="activity_route_select_building">Выберите корпус</string>
+    <string name="activity_route_select_point">Выберите аудиторию</string>
+
     <!-- HomeActivity -->
     <string name="activity_home_navigate">Найти путь</string>
     <string name="activity_home_news">Новости</string>
     <string name="activity_home_progress">Успеваемость</string>
     <string name="activity_home_schedule">Расписание</string>
 
-    <string name="activity_home_alert_message">Для использования приложения
-        необходимо войти или зарегистрироваться</string>
-    <string name="activity_home_alert_negative">Завершить</string>
+    <string name="activity_home_alert_message">Вы действительно хотите выйти из аккаунта \"%s\"?</string>
+    <string name="activity_home_alert_title">Внимание!</string>
+    <string name="activity_home_alert_negative">Отмена</string>
     <string name="activity_home_alert_positive">Принять</string>
 
-    <string name="activity_home_alert_network_message">Ошибка входа</string>
-    <string name="activity_home_alert_network_negative">Завершить</string>
-    <string name="activity_home_alert_network_positive">Еще раз</string>
 
-    <string name="activity_home_loading_message">Вход</string>
+    <string name="activity_home_login_message">Для использования приложения
+        необходимо войти или зарегистрироваться. Нажмите, чтобы продолжить.</string>
+
+    <string name="activity_home_login_error_message">Ошибка входа. Нажмите, чтобы попробовать еще раз.</string>
+
+    <string name="activity_home_loading_message">Вход, подождите...</string>
+    <string name="activity_home_need_permissin">Для работы приложения необходимо разрешить работать
+    с памятью устройства.</string>
+
+    <!-- Route Menu -->
+    <string name="menu_route_logout">Выйти из аккаунта</string>
+    <string name="menu_route_login">Войти</string>
+
+
+
+    <!-- Browser menu -->
+    <string name="menu_browser_close">Закрыть браузер</string>
+
+    <!-- Alerts -->
+    <string name="alert_title">Внимание!</string>
+    <string name="alert_positive">ОК</string>
+    <string name="alert_negative">Отмена</string>
+
+    <string name="alert_dl_map">Данную карту необходимо загрузить. Продолжить?</string>
+
+    <string name="alert_loading">Загрузка...</string>
+
+    <string name="alert_network_disable">Похоже, сеть недоступна! Пожалуйста, проверьте подключение.</string>
+    <string name="alert_network_title">Ошибка загрузки</string>
+    <string name="alert_network_cancel">Завершить</string>
+
 
 </resources>

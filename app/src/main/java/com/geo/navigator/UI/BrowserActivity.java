@@ -13,6 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -46,6 +48,22 @@ public class BrowserActivity extends AppCompatActivity {
     private Pattern mPattern;
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.browser_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.browser_menu_close) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     //вызывать для запуска интентом
     public static Intent newIntent(Context context, String url){
         Intent intent = new Intent(context, BrowserActivity.class);
@@ -73,6 +91,10 @@ public class BrowserActivity extends AppCompatActivity {
             mCurrentUrl = intent.getStringExtra(EXTRA_URL);
         } else {
             mCurrentUrl = NPI_NEWS_URL; //дефолтный URL, на всякий случай
+        }
+
+        if(mCurrentUrl.equals(LOGIN_URL)){
+
         }
 
         mPattern = Pattern.compile(mRegex);
@@ -139,6 +161,15 @@ public class BrowserActivity extends AppCompatActivity {
         mWebView.loadUrl(mCurrentUrl);
         updateTitle(mCurrentUrl);
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(mWebView.canGoBack()){
+            mWebView.goBack();
+        } else {
+            finish();
+        }
     }
 
     //Обновляет заголовок приложения

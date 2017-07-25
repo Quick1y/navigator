@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/spinner_view_text"
+    tools:text="Какой-нибудь корпус"
+    android:textColor="@android:color/black"
+    android:textSize="@dimen/spinner_text_size"
+    android:padding="@dimen/spinner_padding">
+</TextView>

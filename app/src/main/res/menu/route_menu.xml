@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/route_menu_logout"
+        android:title="@string/menu_route_logout"/>
+
+    <item
+        android:id="@+id/route_menu_login"
+        android:title="@string/menu_route_login"/>
+
     <item
         android:id="@+id/route_menu_fil_db_points"
         android:title="Заполнить точки бд"/>
@@ -7,4 +16,19 @@
     <item
         android:id="@+id/route_menu_fil_db_edges"
         android:title="Заполнить дуги"/>
+
+    <item
+        android:id="@+id/route_menu_fil_db_maps"
+        android:title="Заполнить карты"/>
+
+    <item
+        android:id="@+id/route_menu_download_map"
+        android:title="Скачать объекты, здания и карты"/>
+
+    <item android:id="@+id/route_menu_clear_db"
+        android:title="Очистить базу даных"/>
+
+
+
+
 </menu>

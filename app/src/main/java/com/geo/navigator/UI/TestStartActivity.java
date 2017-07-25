@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.geo.navigator.R;
-import com.geo.navigator.UI.BrowserActivity;
-import com.geo.navigator.UI.HomeActivity;
-import com.geo.navigator.UI.RouteActivity;
+import com.geo.navigator.UI.Home.HomeActivity;
 
 public class TestStartActivity extends AppCompatActivity {
 

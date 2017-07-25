@@ -1,4 +1,4 @@
-package com.geo.navigator.UI;
+package com.geo.navigator.UI.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.geo.navigator.R;
+import com.geo.navigator.UI.BrowserActivity;
+import com.geo.navigator.UI.RouteActivity;
 
 /**
  * Created by nikita on 02.07.17.
