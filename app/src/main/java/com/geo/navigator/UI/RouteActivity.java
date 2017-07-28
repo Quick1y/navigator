@@ -7,36 +7,40 @@ package com.geo.navigator.UI;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.geo.navigator.Model.Building;
 import com.geo.navigator.Model.IMapDownloaded;
 import com.geo.navigator.Model.ISpinnerItem;
-import com.geo.navigator.Model.LocalMap;
 import com.geo.navigator.Model.MySpinnerAdapter;
 import com.geo.navigator.Model.SimplePoint;
 import com.geo.navigator.Model.ServerAPI;
 import com.geo.navigator.R;
 import com.geo.navigator.Database.MyDatabaseProvider;
-import com.geo.navigator.Database.TempDatabase;
-import com.geo.navigator.Model.DijkstrasAlgorithm;
+import com.geo.navigator.Model.WayFinder;
 import com.geo.navigator.Utils.DrawHelper;
 import com.geo.navigator.Model.Edge;
 import com.geo.navigator.Model.Map;
@@ -51,14 +55,14 @@ import java.util.ArrayList;
 public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private static final String TAG = "RouteActivity";
     public static final int REQUEST_CODE_QR = 1;
-    private static final String IS_SAVED = "RouteActivity.IS_SAVED";
 
-    private static final int tempIdMap = 101;
-    private static final int tempIdPoint = 1001;
+    private static final int ITS_START_MAP = 410;  // указывают downloadMap на то, какая
+    private static final int ITS_FINISH_MAP = 420;  // из карт была загружена
 
     private ImageView mImageViewDrawing;
+
     private ImageView mImageViewBackground;
-    private FrameLayout mFindWayButton;
+    private Button mFindWayButton;
     private Button mScanQRCode;
     private Spinner mObjectSpinner;
     private Spinner mBuildingSpinner;
@@ -66,11 +70,12 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private TextView mWhereAreYouTextView;
     private ImageButton mUpdateSpinButton;
     private AlertDialog adLoading;
+    private BottomSheetBehavior bottomSheetBehavior;
 
-    ArrayList<LocalMap> mMaps;  // Все доступные карты
-    SimplePoint[] mPoints; // Все доступные точки назначения
+    private LinearLayout mHintQrScanLayout;
+    private RelativeLayout mHintLayout;
+
     Bitmap mWayBitmap;
-    AsyncTask mDownloadAsync;
 
     private Map mCurrentMap;
     private Point mStartPoint;  // Начальная и конечная
@@ -82,9 +87,6 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private boolean mIsLoadingNow; // алерт "загрузка" сейчас показан
 
     private RouteSaveFragment rsf;
-    private int mMapSpinPos;
-    private int mPointSpinPos;
-
 
     //вызывать для запуска интентом
     public static Intent newIntent(Context context) {
@@ -97,6 +99,11 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         setTitle(getString(R.string.activity_route_title));
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
 
         //достаем данные из фрагмента
         FragmentManager fm = getSupportFragmentManager();
@@ -116,15 +123,12 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             mIsLoadingNow = rsf.isLoadingNow;
             mIdStartPoint = rsf.idStartPoint;
 
-            //mMapSpinPos = rsf.mapSpinPos;
-
             Log.d(TAG, "Состояние восстановлено");
-            //  mPointSpinPos = rsf.pointSpinPos; // пока не работает
         }
 
 
+        //алерт "загрузка"
         adLoading = createLoadingAlert();
-        mMaps = TempDatabase.getMaps(); //получаем список карт
 
         //инициализируем вьюхи
         initUI();
@@ -133,9 +137,9 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         mWhereAreYouTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIdStartPoint = 1;
-                mIdCurrentMap = 2;
-                setStartPoint();
+              //  mIdStartPoint = 27;
+            //    mIdCurrentMap = 2;
+            //    setStartPoint();
             }
         });
 
@@ -146,7 +150,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         //подписываемся на событие загрузки карты
         ServerAPI.setOnMapDLListener(this);
 
-        if(mIsLoadingNow){
+        if (mIsLoadingNow) {
             // если перед повортом был показан алерт "загрузка", то показываем его
             adLoading.show();
         }
@@ -166,7 +170,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         ServerAPI.deleteOnMapDLListener(this); // отписывамся от оповещений о загрузке карты
     }
 
-    @Override // вызываетс после завершения работы QRScannerActivity
+    @Override // вызывается после завершения работы QRScannerActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             switch (resultCode) {
@@ -211,7 +215,14 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         }
     }
 
-
+    @Override // нажата кнопка Back
+    public void onBackPressed() {
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
     //Устанавливает начальную точку пути и просит скачать карту, если у нас такой нет
@@ -224,14 +235,14 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         }
 
         if (mCurrentMap == null) { //если не нашел такой карты, то качаем ее
-            showAlertDownloadMap(mIdCurrentMap);
+            showAlertDownloadMap(mIdCurrentMap, ITS_START_MAP);
             return;
         }
 
 
         if (mStartPoint == null) { // если метод вызван после порота активити, то не null
             mStartPoint = MyDatabaseProvider.getPoint(this, mIdStartPoint);
-            mWayBitmap = FileHelper.readImage(getApplicationContext(), mCurrentMap.getImagePath());
+            //mWayBitmap= FileHelper.readImage(getApplicationContext(), mCurrentMap.getImagePath());
         }
 
         if (mStartPoint == null) { //если не нашел такой точки, то качаем карту (ну мало ли что)
@@ -240,55 +251,129 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             return;
         }
 
+        Bitmap mapBitmap = FileHelper.readImage(getApplicationContext(), mCurrentMap.getImagePath());
+        mapBitmap = scaleBitmap(mapBitmap); // увеличиваем битмап в соответствии с разрешением юзера
+
+        mImageViewBackground.setImageBitmap(mapBitmap);
+        mImageViewBackground.setBackgroundColor(Color.WHITE);
+        mHintQrScanLayout.setVisibility(View.GONE);
+
         mWhereAreYouTextView.setText(mStartPoint.getDescription());
-        mImageViewBackground.setImageBitmap(mWayBitmap);
 
         String messToast = getString(R.string.activity_route_location_ok);
         Toast.makeText(this, messToast, Toast.LENGTH_SHORT).show();
+
     }
 
     //рассчет пути
     private ArrayList<Point> findWay() {
 
+        Edge[][] edges = MyDatabaseProvider.getEdgesMatrix(this, mCurrentMap.getId()); // получаем матрицу переходов
+        WayFinder wf = new WayFinder(edges);
         mFinishPoint = MyDatabaseProvider.getPoint(this, mSimpleFinishPoint.getId());
 
-        if (mFinishPoint == null) {
-            Toast.makeText(this, "Такой конечной точки нет, надо качать", Toast.LENGTH_SHORT).show();
-            showAlertDownloadMap(mSimpleFinishPoint.getMapId());
+        hideHint(); // по дефолту лучше убрать
+
+        if (mFinishPoint == null) {  //если такой точки нет, то качаем карту
+            showAlertDownloadMap(mSimpleFinishPoint.getMapId(), ITS_FINISH_MAP);
             return null;
-        } else if (mFinishPoint.getMapId() != mCurrentMap.getId()) {
-            Toast.makeText(this, "Это другая карта", Toast.LENGTH_SHORT).show();
+        } else if (mFinishPoint.getMapId() != mCurrentMap.getId()) { //Если есть, но не на этой карте
             //ведем юзера к лестнице или выходу
-            return null;
+            Map finishMap = MyDatabaseProvider.getMap(this, mFinishPoint.getMapId());
+
+            if(finishMap.getBuildingId() == mCurrentMap.getBuildingId()){ //если в этом здании
+                //ведем к лестнице
+                Point[] stairsPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_STAIRS);
+
+                if(stairsPoints == null){ // Лестниц на карте нет
+                    String mess = getString(R.string.activity_route_error_routing);
+                    Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "findWay: Не могу построить маршрут до карты finishMap.id = " + finishMap.getId());
+                    return null;
+                }
+
+                int pointsId[] = new int[stairsPoints.length];
+                for (int i = 0; i < stairsPoints.length; i++){
+                    pointsId[i] = stairsPoints[i].getId();
+                }
+
+                int nearestPointId = wf.getNearestPoint(mStartPoint.getId(), pointsId);
+
+                Log.d(TAG, "findWay: близжайшая точка = " + nearestPointId);
+
+                mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
+
+                String dest = getString(R.string.activity_route_hint_follow_to) + " на " + finishMap.getDescription();
+                showHint(dest);
+            } else {
+                //ведем к выходу
+                Point[] exitPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_EXIT);
+
+                if(exitPoints != null){
+
+                    int pointsId[] = new int[exitPoints.length];
+                    for (int i = 0; i < exitPoints.length; i++){
+                        pointsId[i] = exitPoints[i].getId();
+                    }
+
+                    int nearestPointId = wf.getNearestPoint(mStartPoint.getId(), pointsId);
+                    mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
+
+                    String dest = getString(R.string.activity_route_hint_follow_to) + " к Выходу";
+                    showHint(dest);
+
+                } else {   //если выхода на этой карте нет, то ведем к лестнице
+
+                    Point[] stairsPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_STAIRS);
+
+                    if(stairsPoints == null){ // Лестниц на карте нет
+                        String mess = getString(R.string.activity_route_error_routing);
+                        Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "findWay: Не могу построить маршрут до карты finishMap.id = " + finishMap.getId());
+                        return null;
+                    }
+
+                    int pointsId[] = new int[stairsPoints.length];
+                    for (int i = 0; i < stairsPoints.length; i++){
+                        pointsId[i] = stairsPoints[i].getId();
+                    }
+
+                    int nearestPointId = wf.getNearestPoint(mStartPoint.getId(), pointsId);
+                    mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
+
+                    String dest = getString(R.string.activity_route_hint_follow_to) + " к Выходу";
+                    showHint(dest);
+                }
+
+            }
+
         }
 
-        ArrayList<Point> points;
-
-        Edge[][] edges = MyDatabaseProvider.getEdgesMatrix(this, mCurrentMap.getId()); // получаем матрицу переходов
-
-        DijkstrasAlgorithm dAlgorithm = new DijkstrasAlgorithm(edges);
 
         //находим кратчайший путь в виде массива id точек
-        int[] pointsIdArr = dAlgorithm.getShortestRoute(mStartPoint.getId(), mFinishPoint.getId());
+        int[] pointsIdArr = wf.getShortestRoute(mStartPoint.getId(), mFinishPoint.getId());
+
+        //отправляем статистику по посещениям
+        sendStatistic(pointsIdArr);
 
         //преобразовываем его к списку точек
-        points = MyDatabaseProvider.getPointsListFromArray(this, mStartPoint.getMapId(), pointsIdArr);
-
-        return points;
+        return MyDatabaseProvider.getPointsListFromArray(this, mStartPoint.getMapId(), pointsIdArr);
     }
 
     //рисует путь и отправляет его на экран
     private void drawWay(ArrayList<Point> pointsList) {
-        mWayBitmap = DrawHelper.drawWay(pointsList, getResources().getColor(R.color.colorAccent));
+        Bitmap mapBitmap = FileHelper.readImage(getApplicationContext(), mCurrentMap.getImagePath());
+        int sizePx = mapBitmap.getHeight(); // получаем размер (она все равно квадратная)
+
+        mWayBitmap = DrawHelper.drawWay(pointsList, this, sizePx);
+        mWayBitmap = scaleBitmap(mWayBitmap); // увеличиваем битмап в соответствии с разрешением пользователя
         mImageViewDrawing.setImageBitmap(mWayBitmap);
     }
 
 
-
-
     // Показывает алерт о необходимости загрузки карты и, в случае согласия,
     // загружает ее
-    private void showAlertDownloadMap(final int idDLMap) {
+    private void showAlertDownloadMap(final int idDLMap, final int which_map) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.alert_title)
                 .setMessage(R.string.alert_dl_map)
@@ -298,7 +383,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                         adLoading.show(); // показывает алерт "Загрузка..."
                         mIsLoadingNow = true;
                         // загружаем карту, результат придет в mapDownloaded()
-                        ServerAPI.downloadMap(getApplicationContext(), idDLMap);
+                        ServerAPI.downloadMap(getApplicationContext(), idDLMap, which_map);
                     }
                 })
                 .setNegativeButton(R.string.alert_negative, null)
@@ -306,17 +391,34 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     }
 
     @Override // вызывается из ServerAPI, когда карта загружена
-    public void mapDownloaded(boolean result){
+    public void mapDownloaded(boolean result, int which_map) {
         adLoading.hide();
         mIsLoadingNow = false;
-        if (result) {
-            setStartPoint();
-        } else {
-            showNetworkDisAlert();
+        switch (which_map) {
+            case ITS_START_MAP:
+                if (result) {
+                    setStartPoint();
+                } else {
+                    showNetworkDisAlert();
+                }
+                break;
+
+            case ITS_FINISH_MAP:
+                if (result) {
+                    drawWay(findWay());
+                } else {
+                    showNetworkDisAlert();
+                }
+                break;
+
+            default:
+                break;
         }
+
     }
 
     //показывает алерт "Ошибка загрузки"
+
     private void showNetworkDisAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.alert_network_title)
@@ -344,9 +446,9 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
 
 
-
     //восстанавливает UI после поворота
     private void setupSavedUI() {
+        Log.d(TAG, "setupSavedUI: cm = " + mCurrentMap + "; sp = " + mStartPoint);
         if (mCurrentMap != null && mStartPoint != null) {
             setStartPoint();
         }
@@ -354,6 +456,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         if (mWayBitmap != null) {
             mImageViewDrawing.setImageBitmap(mWayBitmap);
         }
+
     }
 
     //сбрасывает UI в дефолтное состояние
@@ -366,18 +469,69 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
     //инициализируют все UI-элементы
     private void initUI() {
+
+        //это все для floating action button и выезжающего снизу лейаута
+        LinearLayout llBottomSheet = (LinearLayout) findViewById(R.id.content_route);
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        //скрываем кнопку при разворачивании bottom sheet
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
+                    fab.animate().scaleX(0).scaleY(0).setDuration(100).start();
+                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
+                    fab.animate().scaleX(1).scaleY(1).setDuration(100).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+
+        });
+
+        //разворачиваем bottom sheet по клику на fab
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                fab.animate().scaleX(0).scaleY(0).setDuration(100).start();
+            }
+        });
+
+
+        //слой с подсказкой "отсканируйте qr код"
+        mHintQrScanLayout = (LinearLayout) findViewById(R.id.activity_route_hint_qr_layout);
+
         //текст, отображающий ваше местоположение
         mWhereAreYouTextView = (TextView) findViewById(R.id.activity_route_where_are_you_text);
 
         //слой, на котором рисуется маршрут
         mImageViewDrawing = (ImageView) findViewById(R.id.activity_route_image_drawing);
+        mImageViewDrawing.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                Log.d(TAG, "mImageViewDrawing touch");
+                return false;
+            }
+        });
 
         //устанавливает фон
         mImageViewBackground = (ImageView) findViewById(R.id.activity_route_image_background);
-        mImageViewBackground.setImageDrawable(getResources().getDrawable(R.drawable.qrcode_icon_with_text));
+        mImageViewBackground.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                Log.d(TAG, "mImageViewBackground touch");
+                return true;
+            }
+        });
 
         //кнопка Построить маршрут
-        mFindWayButton = (FrameLayout) findViewById(R.id.activity_route_findway_button);
+        mFindWayButton = (Button) findViewById(R.id.activity_route_findway_button);
         mFindWayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -385,6 +539,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                     ArrayList<Point> way = findWay();
                     if (way != null) {
                         drawWay(way);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     }
                 } else {
                     Toast.makeText(getBaseContext(),
@@ -413,12 +568,24 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             }
         });
 
+
+        //подсказка сверху, например "следуйте на второй этаж"
+        mHintLayout = (RelativeLayout) findViewById(R.id.route_hint);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.route_hint_button_close);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideHint();
+            }
+        });
+
+
         spinnerAdapterInit();
     }
 
     //тут происходит какая-то вакханалия, за которую мне очень стыдно
     //инициализирует спиннеры и адаптеры в них
-    private void spinnerAdapterInit(){
+    private void spinnerAdapterInit() {
         mObjectSpinner = (Spinner) findViewById(R.id.activity_route_object_spinner);      //Спиннер выбора объекта
         mBuildingSpinner = (Spinner) findViewById(R.id.activity_route_building_spinner);  //Спиннер выбора корпуса
         mPointSpinner = (Spinner) findViewById(R.id.activity_route_point_spinner);        //Спиннер выбора места назначения
@@ -572,15 +739,21 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         mPointSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
-                if(id != -1){
+                if (id != -1) {
                     mSimpleFinishPoint = (SimplePoint) adapterView.getItemAtPosition(i);
-                    mCurrentMap = MyDatabaseProvider.getMapByPointId(getApplicationContext(), mSimpleFinishPoint.getId());
 
-                    Log.d(TAG, "mPointSpinner: finish point id = " + mSimpleFinishPoint.getId() + ";" +
-                            " map id = " + mSimpleFinishPoint.getMapId());
+                    /**
+                     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                     */
+
+               //     mSimpleFinishPoint = new SimplePoint(mSimpleFinishPoint.getId(), 1, mSimpleFinishPoint.getInfo());
+
+
+                    Log.d(TAG, "mPointSpinner: finish point id = " + mSimpleFinishPoint.getId()
+                            + "; map id = " + mSimpleFinishPoint.getMapId());
                 } else {
                     mSimpleFinishPoint = null;
-                    mCurrentMap = null;
                 }
             }
 
@@ -591,4 +764,69 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         });
     }
 
+
+
+    //показывает подсказку сверху
+    private void showHint(String dest) {
+        TextView tv = (TextView) findViewById(R.id.route_hint_destination);
+        tv.setText(dest);
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.route_hint_anim_show);
+        mHintLayout.startAnimation(animation);
+        mHintLayout.setVisibility(View.VISIBLE);
+    }
+
+    //скрывает подсказку сверху
+    private void hideHint() {
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.route_hint_anim_hide);
+        mHintLayout.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mHintLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+    }
+
+
+    //отправляет статитстику по посещениям точки
+    private void sendStatistic(final int pointsId[]){
+
+        SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
+        final String login = sp.getString(getString(R.string.preference_user_login), "default_login");
+
+        if(login.equals("default_login"))
+            return;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int id : pointsId){
+                    ServerAPI.setPointStat(id, login);
+                }
+            }
+        }).start();
+
+    }
+
+    private Bitmap scaleBitmap(Bitmap bitmap){
+        if(bitmap == null){
+            String mess = getString(R.string.activity_route_read_error);
+            Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        int scale = getResources().getInteger(R.integer.scale_bitmap);
+        return Bitmap.createScaledBitmap(bitmap,scale,scale, false);
+    }
 }

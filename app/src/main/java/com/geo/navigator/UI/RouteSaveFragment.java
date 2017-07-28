@@ -26,9 +26,6 @@ public class RouteSaveFragment extends Fragment {
     public int idCurrentMap;
     public int idStartPoint;
 
-    public int mapSpinPos;
-    public int pointSpinPos;
-
     public static RouteSaveFragment newInstance(){
         return new RouteSaveFragment();
     }

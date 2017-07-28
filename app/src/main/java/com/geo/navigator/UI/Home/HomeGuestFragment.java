@@ -16,19 +16,19 @@ import com.geo.navigator.UI.RouteActivity;
  * Created by nikita on 02.07.17.
  */
 
-public class HomeAbitFragment extends Fragment {
-    private static final String TAG = "HomeAbitFragment";
+public class HomeGuestFragment extends Fragment {
+    private static final String TAG = "HomeGuestFragment";
 
     private FrameLayout mFindWayFL;
-    private FrameLayout mAbitFL;
+    private FrameLayout mNewsFL;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_abit, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_guest, container, false);
 
-        mFindWayFL = (FrameLayout) view.findViewById(R.id.a_activity_home_navigate_button_fl);
+        mFindWayFL = (FrameLayout) view.findViewById(R.id.g_activity_home_navigate_button_fl);
         mFindWayFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,12 +37,12 @@ public class HomeAbitFragment extends Fragment {
             }
         });
 
-        mAbitFL = (FrameLayout) view.findViewById(R.id.a_activity_home_abit_button_fl);
-        mAbitFL.setOnClickListener(new View.OnClickListener() {
+        mNewsFL = (FrameLayout) view.findViewById(R.id.g_activity_home_news_button_fl);
+        mNewsFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = BrowserActivity.newIntent(getContext(),
-                        BrowserActivity.NPI_ABIT_URL);
+                        BrowserActivity.NPI_NEWS_URL);
                 startActivity(intent);
             }
         });

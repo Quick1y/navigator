@@ -5,5 +5,5 @@ package com.geo.navigator.Model;
  */
 
 public interface IMapDownloaded {
-    void mapDownloaded(boolean result);
+    void mapDownloaded(boolean result, int which_map);
 }

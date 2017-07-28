@@ -43,8 +43,9 @@ public class MyCursorWrapper extends CursorWrapper {
         int id_map = getInt(getColumnIndex(DatabaseTable.Column.MAPS_ID));
         String desc = getString(getColumnIndex(DatabaseTable.Column.MAPS_DESC));
         String img_path = getString(getColumnIndex(DatabaseTable.Column.MAPS_IMG_PATH));
+        int build_id = getInt(getColumnIndex(DatabaseTable.Column.MAPS_BUILDING_ID));
 
-        return new Map(id_map,desc,img_path);
+        return new Map(id_map,desc,img_path, build_id);
     }
 
 }

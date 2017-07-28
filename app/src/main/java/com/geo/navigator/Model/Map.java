@@ -8,11 +8,13 @@ public class Map {
     private int mId;
     private String mDescription;
     private String mImagePath;
+    private int mBuildingId;
 
-    public Map(int id, String description, String imagePath){
+    public Map(int id, String description, String imagePath, int buildingId){
         mId = id;
         mDescription = description;
         mImagePath = imagePath;
+        mBuildingId = buildingId;
     }
 
     public String getImagePath() {
@@ -30,6 +32,8 @@ public class Map {
     public String getDescription() {
         return mDescription;
     }
+
+    public int getBuildingId(){return mBuildingId;}
 
     @Override
     public String toString() {

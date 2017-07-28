@@ -30,6 +30,7 @@ public class MyJSONParser {
     private static final String DL_MAP = "Maps";
     private static final String DL_MAP_ID = "Id";
     private static final String DL_MAP_DESC = "INFO";
+    private static final String DL_MAP_BUILDING_ID = "id_Buildings"; //////////////
 
     private static final String DL_POINTS_INDEX= "1";
     private static final String DL_POINTS = "points";
@@ -61,6 +62,7 @@ public class MyJSONParser {
     private static final String POINT_ARRAY = "points";
     private static final String POINT_ID = "Id";
     private static final String POINT_INFO = "Info";
+    private static final String POINT_MAP= "iDmaps";
 
 
 
@@ -128,9 +130,11 @@ public class MyJSONParser {
         for(int i = 0; i < json.length(); i++){
             int id = json.getJSONObject(i).getInt(POINT_ID);
             String info = json.getJSONObject(i).getString(POINT_INFO);
-            points.add(new SimplePoint(id, info));
+            int id_map = json.getJSONObject(i).getInt(POINT_MAP);
 
-            Log.d(TAG, "SimplePoint: id = "+id+"; desc = " + info);
+            points.add(new SimplePoint(id, id_map, info));
+
+            Log.d(TAG, "SimplePoint: id = "+id+"; desc = " + info+"; map_id = " + id_map);
         }
 
 
@@ -139,7 +143,7 @@ public class MyJSONParser {
     }
 
 
-    // 4 метода ниже служат для загрузки всей карты целиком
+    // 4 метода ниже служат для получения всей карты целиком из одного json'a
     public static Map getDownloadMap(String jsonStr)throws JSONException {
         JSONArray json = new JSONArray(jsonStr); //создаем JSON из строки
 
@@ -147,10 +151,11 @@ public class MyJSONParser {
 
         int id = mapObject.getInt(DL_MAP_ID);
         String desc = mapObject.getString(DL_MAP_DESC);
+        int building_id = mapObject.getInt(DL_MAP_BUILDING_ID);
 
         Log.d(TAG, "getDownloadMap");
         Log.d(TAG, "id = "+id+"; desc = " + desc);
-        return new Map(id, desc, null); //путь картинки на диске пока null
+        return new Map(id, desc, null, building_id); //путь картинки на диске пока null
     }
 
     public static Point[] getDownloadPoints(String jsonStr) throws JSONException{

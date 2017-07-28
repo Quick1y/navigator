@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_route"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_grey_200"
+    android:elevation="5dp"
+    android:orientation="vertical"
+    android:visibility="visible"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="1000dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    tools:context="com.geo.navigator.UI.RouteActivity"
+    tools:showIn="@layout/activity_route">
+    <!-- android:background="@color/background_grey_50" -->
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_route_where_are_you"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:drawableLeft="@drawable/ic_circle_red"
+                android:drawablePadding="6dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background_light"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="6dp"/>
+
+            <TextView
+                android:id="@+id/activity_route_where_are_you_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/activity_route_location"
+                tools:text="LALALALALLALALALAL ALALLALALALALALALAL ALdDSADASDASDAL" />
+
+
+            <Button
+                android:id="@+id/activity_route_button_qr"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:text="@string/activity_route_scan"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/background_grey_50"
+                android:layout_margin="6dp"
+                />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_route_destination"
+                    android:layout_gravity="start|center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:drawableLeft="@drawable/ic_circle_pur"
+                    android:drawablePadding="6dp" />
+
+                <ImageButton
+                    android:id="@+id/activity_route_update_spinner"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:background="@color/background_alpha0"
+                    android:src="@drawable/ic_refresh"/>
+
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background_light"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="6dp"/>
+
+            <Spinner
+                android:id="@+id/activity_route_object_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Spinner
+                android:id="@+id/activity_route_building_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Spinner
+                android:id="@+id/activity_route_point_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+    <Button
+        android:id="@+id/activity_route_findway_button"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:text="@string/activity_route_find_route"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/background_grey_50"
+        android:layout_margin="6dp"
+
+        />
+
+
+</LinearLayout>

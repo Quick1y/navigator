@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + DatabaseTable.Column.MAPS_ID + " INTEGER,  "
                 + DatabaseTable.Column.MAPS_IMG_PATH + " STRING, "
-                + DatabaseTable.Column.MAPS_DESC + " STRING)"
+                + DatabaseTable.Column.MAPS_DESC + " STRING, "
+                + DatabaseTable.Column.MAPS_BUILDING_ID + " INTEGER)"
         );
 
         //Создаем таблицу точек

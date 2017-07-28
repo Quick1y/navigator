@@ -29,7 +29,7 @@ public class HomeStudentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_student, container, false);
 
-        mFindWayFL = (FrameLayout) view.findViewById(R.id.activity_home_navigate_button_fl);
+        mFindWayFL = (FrameLayout) view.findViewById(R.id.s_activity_home_navigate_button_fl);
         mFindWayFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +38,7 @@ public class HomeStudentFragment extends Fragment {
             }
         });
 
-        mNewsFL = (FrameLayout) view.findViewById(R.id.activity_home_news_button_fl);
+        mNewsFL = (FrameLayout) view.findViewById(R.id.s_activity_home_news_button_fl);
         mNewsFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +48,7 @@ public class HomeStudentFragment extends Fragment {
             }
         });
 
-        mProgressFL = (FrameLayout) view.findViewById(R.id.activity_home_progress_button_fl);
+        mProgressFL = (FrameLayout) view.findViewById(R.id.s_activity_home_progress_button_fl);
         mProgressFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +58,7 @@ public class HomeStudentFragment extends Fragment {
             }
         });
 
-        mScheduleFL = (FrameLayout) view.findViewById(R.id.activity_home_schedule_button_fl);
+        mScheduleFL = (FrameLayout) view.findViewById(R.id.s_activity_home_schedule_button_fl);
         mScheduleFL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

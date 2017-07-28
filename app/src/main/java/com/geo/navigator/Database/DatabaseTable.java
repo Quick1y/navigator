@@ -13,6 +13,7 @@ public class DatabaseTable {
         public static final String MAPS_ID = "id";
         public static final String MAPS_IMG_PATH = "img_path";
         public static final String MAPS_DESC = "description";
+        public static final String MAPS_BUILDING_ID = "building_id";
 
         public static final String POINTS_ID = "id";
         public static final String POINTS_ID_MAP = "id_maps";

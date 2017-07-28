@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -19,11 +17,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuWrapperFactory;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -49,6 +44,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String USER_DEFAULT_ROLE = "Default_Role";
     private static final String USER_STUDENT_ROLE = "Студент";
+    private static final String USER_GUEST_ROLE = "Гость";
+    private static final String USER_ABIT_ROLE = "Абитуриент";
+
 
     private static final int PERMISSION_REQUEST = 111;
 
@@ -101,67 +99,11 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_LOGIN);
                 return true;
 
-            case R.id.route_menu_fil_db_points:
-                Point[] points = TempDatabase.getPointsForMapArrFull();
-
-                try {
-                    MyDatabaseProvider.setPoints(this, points);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                return true;
-
-            case R.id.route_menu_fil_db_edges:
-                Edge[] edges = TempDatabase.getEdgesInLineFull();
-
-                try {
-                    MyDatabaseProvider.setEdges(this, edges);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            case R.id.route_menu_fil_db_maps:
-                Map[] maps = TempDatabase.getMapsFull().toArray(new Map[]{});
-
-                Bitmap korpus1 = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.korpus1);
-                Bitmap background = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.route_background);
-
-                FileHelper.writeImage(this, korpus1, "img_korpus1");
-                FileHelper.writeImage(this, background, "background");
-
-                try {
-                    MyDatabaseProvider.setMaps(this, maps);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return true;
-
-
-            case R.id.route_menu_download_map:
-                try {
-                    new AsyncTask<Void, Void, Void>(){
-
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            ServerAPI.getObjects();
-                            ServerAPI.getBuildings(1);
-                            ServerAPI.getPointsForBuilding(1);
-                            return null;
-                        }
-
-                    }.execute();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return true;
-
             case R.id.route_menu_clear_db:
                 MyDatabaseProvider.clearDatabase(this);
                 FileHelper.clearImageCache(null);
                 return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -300,11 +242,27 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (mUserRole) {
             case USER_STUDENT_ROLE: // пока так, потом добавить для всех ролей
-                Fragment fragment = new HomeStudentFragment();
+                Fragment fragmentStud = new HomeStudentFragment();
                 fm.beginTransaction()
-                        .add(R.id.activity_home_root_layout, fragment, FRAGMENT_TAG)
+                        .add(R.id.activity_home_root_layout, fragmentStud, FRAGMENT_TAG)
                         .commit();
                 break;
+
+            case USER_ABIT_ROLE:
+                Fragment fragmentAbit = new HomeAbitFragment();
+                fm.beginTransaction()
+                        .add(R.id.activity_home_root_layout, fragmentAbit, FRAGMENT_TAG)
+                        .commit();
+                break;
+
+            case USER_GUEST_ROLE:
+                Fragment fragmentGuest = new HomeGuestFragment();
+                fm.beginTransaction()
+                        .add(R.id.activity_home_root_layout, fragmentGuest, FRAGMENT_TAG)
+                        .commit();
+                break;
+
+
 
             case USER_DEFAULT_ROLE:
                 //если не удалось получить роль пользователя
@@ -314,8 +272,6 @@ public class HomeActivity extends AppCompatActivity {
             default: Log.d(TAG, "Да, мы сюда не попали. Роль: " + mUserRole);
 
         }
-
-        Toast.makeText(this, "Добро пожаловать, " + mUserLogin, Toast.LENGTH_SHORT).show();
 
     }
 

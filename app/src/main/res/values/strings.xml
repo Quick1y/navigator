@@ -50,7 +50,7 @@
 
     <!-- RouteActivity -->
     <string name="activity_route_title">Навигатор</string>
-    <string name="activity_route_where_are_you">Где вы:</string>
+    <string name="activity_route_where_are_you">Где вы находитесь:</string>
     <string name="activity_route_destination">Место назначения:</string>
     <string name="activity_route_find_route">Построить маршрут</string>
     <string name="activity_route_scan">Сканировать QR-код</string>
@@ -66,31 +66,37 @@
     <string name="activity_route_select_building">Выберите корпус</string>
     <string name="activity_route_select_point">Выберите аудиторию</string>
 
-    <!-- HomeActivity -->
-    <string name="activity_home_navigate">Найти путь</string>
-    <string name="activity_home_news">Новости</string>
-    <string name="activity_home_progress">Успеваемость</string>
-    <string name="activity_home_schedule">Расписание</string>
+    <string name="activity_route_hint_qr_text">Чтобы определить свое местоположение отсканируйте QR-код</string>
+    <string name="activity_route_hint">Подсказка:</string>
+    <string name="activity_route_hint_follow_to">Следуйте</string>
+    <string name="activity_route_read_error">Ошибка чтения карты. Попробуйте очистить кэш.</string>
+    <string name="activity_route_error_routing">Не могу построить данный маршрут.</string>
 
+    <!-- HomeActivity -->
     <string name="activity_home_alert_message">Вы действительно хотите выйти из аккаунта \"%s\"?</string>
     <string name="activity_home_alert_title">Внимание!</string>
     <string name="activity_home_alert_negative">Отмена</string>
     <string name="activity_home_alert_positive">Принять</string>
-
-
     <string name="activity_home_login_message">Для использования приложения
         необходимо войти или зарегистрироваться. Нажмите, чтобы продолжить.</string>
-
     <string name="activity_home_login_error_message">Ошибка входа. Нажмите, чтобы попробовать еще раз.</string>
-
     <string name="activity_home_loading_message">Вход, подождите...</string>
     <string name="activity_home_need_permissin">Для работы приложения необходимо разрешить работать
     с памятью устройства.</string>
 
+
+    <!-- fragments home  -->
+    <string name="activity_home_navigate">Найти путь</string> <!-- это общее -->
+    <string name="activity_home_news">Новости</string>
+    <string name="activity_home_progress">Успеваемость</string>
+    <string name="activity_home_schedule">Расписание</string>
+    <string name="activity_home_abit">Абитуриенту</string>
+
+
     <!-- Route Menu -->
     <string name="menu_route_logout">Выйти из аккаунта</string>
     <string name="menu_route_login">Войти</string>
-
+    <string name="menu_route_clear_cache">Очистить кэш</string>
 
 
     <!-- Browser menu -->
@@ -108,6 +114,7 @@
     <string name="alert_network_disable">Похоже, сеть недоступна! Пожалуйста, проверьте подключение.</string>
     <string name="alert_network_title">Ошибка загрузки</string>
     <string name="alert_network_cancel">Завершить</string>
+    <string name="title_activity_new_route">NewRouteActivity</string>
 
 
 </resources>

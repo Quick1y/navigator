@@ -40,8 +40,8 @@ public class TempDatabase {
     };
 
     private static Map[] mMapDatabase = {
-            new Map(101, "Корпус 1", "img_korpus1.jpg"),
-            new Map(102, "QR_icon", "background.jpg")
+            new Map(101, "Корпус 1", "img_korpus1.jpg", 0),
+            new Map(102, "QR_icon", "background.jpg", 0)
     };
 
     private static LocalMap[] localMapDatabase = {
@@ -76,17 +76,15 @@ public class TempDatabase {
 
     // Служебный
     public static Edge[] getEdgesInLineFull() {
-        Edge[] edges = new Edge[mEdges.length * mEdges[0].length];
+        ArrayList<Edge> edges = new ArrayList<>();
 
-        int i = 0;
         for (Edge[] e1 : mEdges) {
             for (Edge e2 : e1) {
-                edges[i] = e2;
-                i++;
+                edges.add(e2);
             }
         }
 
-        return edges;
+        return edges.toArray(new Edge[]{});
     }
 
     //служебный

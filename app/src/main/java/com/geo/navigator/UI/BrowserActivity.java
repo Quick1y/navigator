@@ -34,9 +34,12 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String LOGIN_URL = "http://eyesnpi.ru/wp-login.php";
     public static final String REGISTRATION_URL = "http://eyesnpi.ru/wp-login.php?action=register";
     public static final String LOGIN_SUCCESS_URL = "http://eyesnpi.ru/wp-admin/";
+    private static final String LOGIN_CHECK_MAIL = "http://eyesnpi.ru/wp-login.php?checkemail=registered";
+
     public static final String NPI_NEWS_URL = "https://www.npi-tu.ru/";
     public static final String NPI_PROGRESS_URL = "http://progress.npi-tu.ru/application/index";
     public static final String NPI_SCHEDULE_URL = "http://schedule.npi-tu.ru/fac";
+    public static final String NPI_ABIT_URL = "https://abiturient.npi-tu.ru/";
 
     private static final String INTERFACE_NAME = "HTMLOUT";
     private static final String GET_URL_SCRIPT ="javascript:window."+INTERFACE_NAME+".processHTML(document.getElementById('user_login').value);";
@@ -126,6 +129,10 @@ public class BrowserActivity extends AppCompatActivity {
                     updateTitle(url);
                     return false; //страница регистрации
 
+                } else if(url.equals(LOGIN_CHECK_MAIL)){
+                    updateTitle(url);
+                    return false; //страница "проверьте почту"
+
                 } else if(mPattern.matcher(url).find()) {
                     updateTitle(url);
                     return false; //Страница npi-tu.ru
@@ -140,6 +147,7 @@ public class BrowserActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), //Сообщение "Переход запрещен"
                             getString(R.string.activity_browser_run_ban),
                             Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Запрещен переход на " + url);
                     return true;
                 }
             }

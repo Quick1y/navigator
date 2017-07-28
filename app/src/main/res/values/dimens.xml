@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <integer name="scale_bitmap">4000</integer>
+</resources>

@@ -8,7 +8,7 @@
 
 
     <FrameLayout
-        android:id="@+id/activity_home_navigate_button_fl"
+        android:id="@+id/s_activity_home_navigate_button_fl"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:padding="6dp"
@@ -27,7 +27,8 @@
             android:text="@string/activity_home_navigate"
             android:textSize="8pt"
             android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"/>
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
         android:background="@color/background_light"/>
 
     <FrameLayout
-        android:id="@+id/activity_home_news_button_fl"
+        android:id="@+id/s_activity_home_news_button_fl"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:padding="6dp">
@@ -61,7 +62,8 @@
             android:text="@string/activity_home_news"
             android:textSize="8pt"
             android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"/>
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -77,7 +79,7 @@
         android:background="@color/background_light"/>
 
     <FrameLayout
-        android:id="@+id/activity_home_progress_button_fl"
+        android:id="@+id/s_activity_home_progress_button_fl"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:padding="6dp">
@@ -95,7 +97,8 @@
             android:text="@string/activity_home_progress"
             android:textSize="8pt"
             android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"/>
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -111,7 +114,7 @@
         android:background="@color/background_light"/>
 
     <FrameLayout
-        android:id="@+id/activity_home_schedule_button_fl"
+        android:id="@+id/s_activity_home_schedule_button_fl"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:padding="6dp">
@@ -129,7 +132,8 @@
             android:text="@string/activity_home_schedule"
             android:textSize="8pt"
             android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"/>
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"/>
 
         <ImageView
             android:layout_width="wrap_content"

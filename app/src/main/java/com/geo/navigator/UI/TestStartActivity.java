@@ -23,7 +23,7 @@ public class TestStartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test_start);
 
         mButtonStartCamera = (Button) findViewById(R.id.activity_test_start_button_startcamera);
-        mButtonStartCamera.setText("CameraActivity");
+        mButtonStartCamera.setText("Camera");
         mButtonStartCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

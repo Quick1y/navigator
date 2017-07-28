@@ -1,10 +1,13 @@
 package com.geo.navigator.Utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.geo.navigator.Model.Point;
+import com.geo.navigator.R;
 
 import java.util.ArrayList;
 
@@ -14,13 +17,15 @@ import java.util.ArrayList;
  */
 
 public class DrawHelper {
+    private static Canvas canvas;
 
     private DrawHelper(){}
 
-    public static Bitmap drawWay(ArrayList<Point> pointsList, int color){
-        Bitmap bitmap = Bitmap.createBitmap(1000, 1000, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+    public static Bitmap drawWay(ArrayList<Point> pointsList, Context context, int size){
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        int color = context.getResources().getColor(R.color.colorAccent);
 
         paint.setColor(color);
         paint.setStrokeWidth(5);
@@ -35,6 +40,19 @@ public class DrawHelper {
                     paint);
         }
 
+        drawPoint(context.getResources().getColor(R.color.my_red), pointsList.get(0)); // выделяем начальную точку
+        drawPoint(context.getResources().getColor(R.color.my_purpure), pointsList.get(pointsList.size() - 1));  // выделяем конечную точку
+
         return bitmap;
     }
+
+    public static void drawPoint(int color, Point point){
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(color);
+        paint.setStrokeWidth(5);
+
+        canvas.drawCircle(point.getX(), point.getY(), 7, paint);
+    }
+
+
 }

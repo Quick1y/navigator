@@ -30,7 +30,8 @@ public class ServerAPI {
     private static final String TAG = "ServerAPI";
     private static final String HANDLER_RESULT = "ServerAPI.HANDLER_RESULT";
 
-    private static final String SET_USER_STATUS_URL = "http://eyesnpi.ru/API/APIMOBILE/api.php?action=setstatus&status=%s&login=%s";
+    private static final String SET_USER_STATUS_URL = "http://eyesnpi.ru/API/APIMOBILE/api2.php?action=setstatus&status=%s&login=%s";
+    private static final String SET_POINT_INFO = "http://eyesnpi.ru/API/APIMOBILE/api2.php?action=setpointinfo&idPoint=%s&login=%s";
     private static final String GET_USER_ROLE_URL = "http://eyesnpi.ru/API/APIMOBILE/api.php?action=getrol&login=%s";
     private static final String DOWNLOAD_MAP = "http://eyesnpi.ru/API/APIMOBILE/api.php?action=getmap&Id=%s";
     private static final String GET_OBJECTS = "http://eyesnpi.ru/API/APIMOBILE/api.php?action=getobj";
@@ -64,6 +65,30 @@ public class ServerAPI {
             }
         }
 
+        return success;
+    }
+
+
+    /**
+     *Отправляет статистику посещения точки пользователем
+     */
+    public static boolean setPointStat(int idPoint, @NotNull String userLogin){
+        String query = String.format(SET_POINT_INFO, idPoint, userLogin);
+
+        int i = 0;
+        boolean success = false;
+        while (i < 5 && !success) { // делаем 5 попыток
+            try {
+                success = QueryExecutor.executePost(query);
+                i++;
+                Thread.sleep(100);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        Log.d(TAG, "setPointStat отправлена статистика для точки " + idPoint + " и логина " + userLogin);
         return success;
     }
 
@@ -228,7 +253,7 @@ public class ServerAPI {
     /**
      * Загружает и записывает в БД карту, ее точки и дуги. Этот метод выполняет в отдельном потоке
      */
-    public static void downloadMap(final Context context, @NotNull final int map_id){
+    public static void downloadMap(final Context context, @NotNull final int map_id, final int which_map){
 
         final Handler handler = new Handler(){
             @Override
@@ -236,7 +261,7 @@ public class ServerAPI {
                 Bundle bundle = msg.getData();
                 boolean mes = bundle.getBoolean(HANDLER_RESULT);
 
-                sendCallToDLListeners(mes);
+                sendCallToDLListeners(mes, which_map);
             }
         };
 
@@ -265,7 +290,6 @@ public class ServerAPI {
 
                     try {
                         json = QueryExecutor.executeGetJSON(query);
-                        //json = JSONDevStorage.DOWNLOAD_JSON;
                         if (json != null)
                             success = true;
                         i++;
@@ -400,9 +424,9 @@ public class ServerAPI {
     }
 
     //оповещает слушателей о том, что карта загружена
-    private static void sendCallToDLListeners(boolean result){
+    private static void sendCallToDLListeners(boolean result, int which_map){
         for (IMapDownloaded listener : mapDLListeners){
-            listener.mapDownloaded(result);
+            listener.mapDownloaded(result, which_map);
         }
     }
 

@@ -22,4 +22,18 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Для синих кнопок -->
+    <style name="MySpinnerTheme" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:textSize">6sp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

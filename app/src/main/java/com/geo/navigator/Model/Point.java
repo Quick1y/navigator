@@ -5,6 +5,11 @@ package com.geo.navigator.Model;
  */
 
 public class Point {
+
+    public static final int META_STAIRS = 1000;
+    public static final int META_EXIT = 2000;
+
+
     private int mX;
     private int mY;
     private int mId;

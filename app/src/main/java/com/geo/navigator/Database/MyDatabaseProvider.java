@@ -150,6 +150,56 @@ public class MyDatabaseProvider {
         return pointsList;
     }
 
+    @Nullable
+    public static Point[] getPointsByMeta(Context context, int id_map, int meta){
+        init(context);
+
+        //Делаем запрос к бд
+        Cursor cursor;
+        try {
+            cursor = mDatabase.query(
+                    DatabaseTable.POINTS,
+                    null, // выбрать все столбцы
+                    "" + DatabaseTable.Column.POINTS_META + "=? AND "
+                     + DatabaseTable.Column.POINTS_ID_MAP + "=?",
+                    new String[] {String.valueOf(meta), String.valueOf(id_map)},
+                    null,
+                    null,
+                    null
+            );
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        Log.d(TAG, "getPointsByMeta: cursor size = " + cursor.getCount());
+        if(cursor.getCount() == 0){
+            cursor.close();
+            return null;
+        }
+
+        //достаем точки
+        Point[] points = new Point[cursor.getCount()];
+        MyCursorWrapper cursorWrapper = new MyCursorWrapper(cursor);
+        cursorWrapper.moveToFirst();
+
+        try {
+            for(int i = 0; i < points.length; i++){
+                points[i] = cursorWrapper.getPoint();
+                cursorWrapper.moveToNext();
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        finally{
+            cursor.close();
+            cursorWrapper.close();
+        }
+
+        return points;
+    }
+
 
 
     @Nullable // Возможно, очень ресурсоемкий метод
@@ -180,7 +230,7 @@ public class MyDatabaseProvider {
             return null;
         }
 
-        //достаем точку
+        //достаем массив дуг
         MyCursorWrapper cursorWrapper = new MyCursorWrapper(cursor);
         Edge[] edges = new Edge[cursor.getCount()];
 
@@ -201,60 +251,52 @@ public class MyDatabaseProvider {
         }
 
 
-        //Теперь преобразуем его в квадратную, упорядоченную(!) матрицу
+        // теперь строим двумерную матрицу переход и
+        // заполняем отсутствующие переходы невозможными
 
-        //проверяем, квадратная ли матрица. (Берем корень от длины массива
-        // и если он не целый, то не квадратная)
-        double compLenght = Math.sqrt(edges.length);
-        int  length = (int) compLenght;
+        Point points[] = getPointsForMap(context, map_id);
 
-        if(compLenght != length){
-            Log.d(TAG, "Матрица дуг не квадратная!");
+        if(points == null){
             return null;
         }
 
-        //собираем не упорядоченную двумерную матрицу
-        Edge[][] edgesMatrix = new Edge[length][length];
-        int index = 0;
-        for (int j = 0; j < length; j++){
-            for (int k = 0; k < length; k++){
-                edgesMatrix[j][k] = edges[index];
-                index++;
-            }
-        }
 
-        //сортируем по вертикали
-        for (int i = length - 1; i >= 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (edgesMatrix[j][0].getIdPointA() > edgesMatrix[j + 1][0].getIdPointA()) {
-                    Edge edge = edgesMatrix[j][0];
-                    edgesMatrix[j][0] = edgesMatrix[j + 1][0];
-                    edgesMatrix[j + 1][0] = edge;
+        int length = points.length;
+        Edge edgesMatrix[][] = new Edge[length][length];
+
+        //заполнение матрицы дуг в соответствии с массивом точек
+        for(int i = 0; i < length; i++){
+            for (int j = 0; j < length; j++){
+
+                for(Edge e : edges){
+                    if(e.getIdPointA() == points[j].getId()
+                            && e.getIdPointB() == points[i].getId()){
+                        edgesMatrix[j][i] = e;                                 //вставляем так для того, что если граф симметричный
+                        if(edgesMatrix[i][j] == null || edgesMatrix[i][j].getDescription().equals("generated")){ //и дуга обратно пустая или сгенерирована
+                            edgesMatrix[i][j] = new Edge(e.getIdPointB(), e.getIdPointA(), e.getWeight(), e.getId_map(),e.getDescription());
+                        }
+                    } else {
+                        if(edgesMatrix[j][i] == null){
+                            edgesMatrix[j][i] = new Edge(points[j].getId(), points[i].getId(), 10000, map_id, "generated");
+                        }
+                    }
                 }
             }
         }
 
 
-        //сортируем по горизонтали
-        for (int i = length - 1; i >= 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (edgesMatrix[0][j].getIdPointA() > edgesMatrix[0][j + 1].getIdPointA()) {
-                    Edge edge = edgesMatrix[0][j];
-                    edgesMatrix[0][j] = edgesMatrix[0][j + 1];
-                    edgesMatrix[0][j + 1] = edge;
-                }
-            }
-        }
 
-        Log.d(TAG, "getEdgesMatrix finished in " + (System.nanoTime() - time) / 1000000.0  + " ms\nMatrix:");
-
+        Log.d(TAG, "Матрица дуг: ");
         for (int i = 0; i < length; i++){
             for (int j = 0; j < length; j++){
-                System.out.print(edgesMatrix[i][j].getIdPointA() + ", " + edgesMatrix[i][j].getIdPointB() + " ");
+                System.out.print(edgesMatrix[i][j].getIdPointA() + ", " + edgesMatrix[i][j].getIdPointB()
+                        + ", w" + edgesMatrix[i][j].getWeight() + " || ");
             }
             System.out.println();
         }
 
+
+        Log.d(TAG, "getEdgesMatrix running time: " + (System.nanoTime() - time) / 1000000.0 + "ms");
         return edgesMatrix;
     }
 
@@ -333,7 +375,7 @@ public class MyDatabaseProvider {
 
         ContentValues values = new ContentValues();
 
-        Log.d(TAG, "setMaps");
+        Log.d(TAG, "setPoints: ");
         for(Point p : points){
             values.put(DatabaseTable.Column.POINTS_ID, p.getId());
             values.put(DatabaseTable.Column.POINTS_ID_MAP, p.getMapId());
@@ -345,7 +387,8 @@ public class MyDatabaseProvider {
             values.put(DatabaseTable.Column.POINTS_META, p.getMeta());
 
             mDatabase.insert(DatabaseTable.POINTS, null, values); // добавляем в бд
-            Log.d(TAG, "id = " + p.getId()+ "; desc = " + p.getDescription() + "; map = " + p.getMapId());
+            Log.d(TAG, "id = " + p.getId()+ "; desc = " + p.getDescription()
+                    + "; map = " + p.getMapId() + "; meta = " + p.getMeta());
         }
 
     }
@@ -356,7 +399,7 @@ public class MyDatabaseProvider {
 
         ContentValues values = new ContentValues();
 
-        Log.d(TAG, "setMaps");
+        Log.d(TAG, "setEdges: ");
         for(Edge e : edges){
             values.put(DatabaseTable.Column.EDGES_ID_A, e.getIdPointA());
             values.put(DatabaseTable.Column.EDGES_ID_B, e.getIdPointB());
@@ -376,14 +419,16 @@ public class MyDatabaseProvider {
 
         ContentValues values = new ContentValues();
 
-        Log.d(TAG, "setMaps");
+        Log.d(TAG, "setMaps: ");
         for(Map m : maps){
             values.put(DatabaseTable.Column.MAPS_ID, m.getId());
             values.put(DatabaseTable.Column.MAPS_DESC, m.getDescription());
             values.put(DatabaseTable.Column.MAPS_IMG_PATH, m.getImagePath());
+            values.put(DatabaseTable.Column.MAPS_BUILDING_ID, m.getBuildingId());
 
             mDatabase.insert(DatabaseTable.MAPS, null, values); // добавляем в бд
-            Log.d(TAG, "m.id = " + m.getId() + "; desc = " +  m.getDescription() + "; path = " + m.getImagePath());
+            Log.d(TAG, "m.id = " + m.getId() + "; desc = " +  m.getDescription()
+                    + "; path = " + m.getImagePath() + "; building id = " + m.getBuildingId());
         }
 
     }
