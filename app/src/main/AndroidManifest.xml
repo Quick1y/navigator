@@ -18,16 +18,7 @@
         <activity android:name=".zzz_useless_class.camera.ui.CameraActivity" />
         <activity android:name=".UI.RouteActivity" />
         <activity android:name=".UI.QRScannerActivity" />
-        <activity android:name=".UI.TestStartActivity">
-
-            <!--
-            intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent
-            -->
-        </activity>
+        <activity android:name=".UI.TestStartActivity"/>
         <activity android:name=".UI.Home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

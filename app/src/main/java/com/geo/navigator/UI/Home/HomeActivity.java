@@ -193,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
         // то словим баг на добавлении фрагмента после запроса пермишенов
     }
 
-    @Override //обработка запроса прав на использование камеры
+    @Override //обработка запроса прав на использование хранилища
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 

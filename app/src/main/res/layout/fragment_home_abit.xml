@@ -1,82 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.geo.navigator.UI.Home.HomeActivity"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/a_activity_home_navigate_button_fl"
+
+    <LinearLayout
+
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:padding="6dp"
-        android:animateLayoutChanges="true">
+        android:layout_height="wrap_content"
+        tools:context="com.geo.navigator.UI.Home.HomeActivity"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:src="@drawable/ic_place_24dp"/>
+        <FrameLayout
+            android:id="@+id/a_activity_home_navigate_button_fl"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:padding="6dp"
+            android:animateLayoutChanges="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="@string/activity_home_navigate"
-            android:textSize="8pt"
-            android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"
-            android:layout_marginLeft="48dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:src="@drawable/ic_place_24dp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:src="@drawable/ic_chevron_right_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:text="@string/activity_home_navigate"
+                android:textSize="8pt"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="48dp"
+                android:layout_marginLeft="48dp"/>
 
-    </FrameLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:src="@drawable/ic_chevron_right_24dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/background_light"/>
+        </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/a_activity_home_abit_button_fl"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:padding="6dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_light"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:src="@drawable/ic_abiturient"/>
+        <FrameLayout
+            android:id="@+id/a_activity_home_abit_button_fl"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="6dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="@string/activity_home_abit"
-            android:textSize="8pt"
-            android:textColor="@android:color/black"
-            android:layout_marginStart="48dp"
-            android:layout_marginLeft="48dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:src="@drawable/ic_abiturient"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:src="@drawable/ic_chevron_right_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:text="@string/activity_home_abit"
+                android:textSize="8pt"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="48dp"
+                android:layout_marginLeft="48dp"/>
 
-    </FrameLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:src="@drawable/ic_chevron_right_24dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/background_light"/>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_light"/>
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

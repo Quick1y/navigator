@@ -86,7 +86,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private SimplePoint mSimpleFinishPoint; // точки
     private boolean mIsLoadingNow; // алерт "загрузка" сейчас показан
 
-    private RouteSaveFragment rsf;
+    private RouteSaveFragment rsf; // удерживаемый фрагмент, в котором сохраняется вся инфа при поворотах
 
     //вызывать для запуска интентом
     public static Intent newIntent(Context context) {

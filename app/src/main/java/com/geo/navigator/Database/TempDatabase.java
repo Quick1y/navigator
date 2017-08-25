@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 /**
  * Created by nikita on 04.06.17.
+ *
+ * Класс временный, будет удален в будущем
  */
 
 public class TempDatabase {
