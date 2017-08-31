@@ -100,7 +100,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         setContentView(R.layout.activity_route);
         setTitle(getString(R.string.activity_route_title));
 
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
@@ -137,9 +137,9 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         mWhereAreYouTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  mIdStartPoint = 27;
-            //    mIdCurrentMap = 2;
-            //    setStartPoint();
+                //  mIdStartPoint = 27;
+                //    mIdCurrentMap = 2;
+                //    setStartPoint();
             }
         });
 
@@ -281,11 +281,11 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             //ведем юзера к лестнице или выходу
             Map finishMap = MyDatabaseProvider.getMap(this, mFinishPoint.getMapId());
 
-            if(finishMap.getBuildingId() == mCurrentMap.getBuildingId()){ //если в этом здании
+            if (finishMap.getBuildingId() == mCurrentMap.getBuildingId()) { //если в этом здании
                 //ведем к лестнице
                 Point[] stairsPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_STAIRS);
 
-                if(stairsPoints == null){ // Лестниц на карте нет
+                if (stairsPoints == null) { // Лестниц на карте нет
                     String mess = getString(R.string.activity_route_error_routing);
                     Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
                     Log.d(TAG, "findWay: Не могу построить маршрут до карты finishMap.id = " + finishMap.getId());
@@ -293,7 +293,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                 }
 
                 int pointsId[] = new int[stairsPoints.length];
-                for (int i = 0; i < stairsPoints.length; i++){
+                for (int i = 0; i < stairsPoints.length; i++) {
                     pointsId[i] = stairsPoints[i].getId();
                 }
 
@@ -309,10 +309,10 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                 //ведем к выходу
                 Point[] exitPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_EXIT);
 
-                if(exitPoints != null){
+                if (exitPoints != null) {
 
                     int pointsId[] = new int[exitPoints.length];
-                    for (int i = 0; i < exitPoints.length; i++){
+                    for (int i = 0; i < exitPoints.length; i++) {
                         pointsId[i] = exitPoints[i].getId();
                     }
 
@@ -326,7 +326,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
                     Point[] stairsPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_STAIRS);
 
-                    if(stairsPoints == null){ // Лестниц на карте нет
+                    if (stairsPoints == null) { // Лестниц на карте нет
                         String mess = getString(R.string.activity_route_error_routing);
                         Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
                         Log.d(TAG, "findWay: Не могу построить маршрут до карты finishMap.id = " + finishMap.getId());
@@ -334,7 +334,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                     }
 
                     int pointsId[] = new int[stairsPoints.length];
-                    for (int i = 0; i < stairsPoints.length; i++){
+                    for (int i = 0; i < stairsPoints.length; i++) {
                         pointsId[i] = stairsPoints[i].getId();
                     }
 
@@ -349,9 +349,17 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
         }
 
+        int[] pointsIdArr;
 
-        //находим кратчайший путь в виде массива id точек
-        int[] pointsIdArr = wf.getShortestRoute(mStartPoint.getId(), mFinishPoint.getId());
+        //если стартовая точки и есть конечная
+        if(mStartPoint.getId() == mFinishPoint.getId()){
+            //getShortestRoute в таком случае работает не всегда корректно, делаем так:
+            pointsIdArr = new int[] {mStartPoint.getId(), mFinishPoint.getId()};
+        } else {
+            //находим кратчайший путь в виде массива id точек
+            pointsIdArr = wf.getShortestRoute(mStartPoint.getId(), mFinishPoint.getId());
+        }
+
 
         //отправляем статистику по посещениям
         sendStatistic(pointsIdArr);
@@ -443,7 +451,6 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                 })
                 .create();
     }
-
 
 
     //восстанавливает UI после поворота
@@ -747,7 +754,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                      * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                      */
 
-               //     mSimpleFinishPoint = new SimplePoint(mSimpleFinishPoint.getId(), 1, mSimpleFinishPoint.getInfo());
+                    //     mSimpleFinishPoint = new SimplePoint(mSimpleFinishPoint.getId(), 1, mSimpleFinishPoint.getInfo());
 
 
                     Log.d(TAG, "mPointSpinner: finish point id = " + mSimpleFinishPoint.getId()
@@ -763,7 +770,6 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             }
         });
     }
-
 
 
     //показывает подсказку сверху
@@ -798,20 +804,20 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
 
     //отправляет статитстику по посещениям точки
-    private void sendStatistic(final int pointsId[]){
+    private void sendStatistic(final int pointsId[]) {
 
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
         final String login = sp.getString(getString(R.string.preference_user_login), "default_login");
 
-        if(login.equals("default_login"))
+        if (login.equals("default_login"))
             return;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int id : pointsId){
+                for (int id : pointsId) {
                     ServerAPI.setPointStat(id, login);
                 }
             }
@@ -819,14 +825,14 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
     }
 
-    private Bitmap scaleBitmap(Bitmap bitmap){
-        if(bitmap == null){
+    private Bitmap scaleBitmap(Bitmap bitmap) {
+        if (bitmap == null) {
             String mess = getString(R.string.activity_route_read_error);
             Toast.makeText(this, mess, Toast.LENGTH_LONG).show();
             return null;
         }
 
         int scale = getResources().getInteger(R.integer.scale_bitmap);
-        return Bitmap.createScaledBitmap(bitmap,scale,scale, false);
+        return Bitmap.createScaledBitmap(bitmap, scale, scale, false);
     }
 }
