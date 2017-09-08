@@ -60,7 +60,7 @@
     </string>
     <string name="activity_route_choose_loc_and_dest_point">Выберите точку отправления и назначения</string>
     <string name="activity_route_json_fail">Данной точки не существует</string>
-    <string name="activity_route_location_ok">Ваше положение определено!</string>
+    <string name="activity_route_location_ok">Ваше положение определено! Сдвинтье панель вниз для просмотра карты</string>
 
     <string name="activity_route_select_object">Выберите объект</string>
     <string name="activity_route_select_building">Выберите корпус</string>
@@ -68,7 +68,9 @@
 
     <string name="activity_route_hint_qr_text">Чтобы определить свое местоположение отсканируйте QR-код</string>
     <string name="activity_route_hint">Подсказка:</string>
-    <string name="activity_route_hint_follow_to">Следуйте</string>
+    <string name="activity_route_hint_follow_to">Следуйте на %s и отсканируйте близжайший QR-код</string>
+    <string name="activity_route_hint_follow_to_exit">Следуйте к выходу</string>
+
     <string name="activity_route_read_error">Ошибка чтения карты. Попробуйте очистить кэш.</string>
     <string name="activity_route_error_routing">Не могу построить данный маршрут.</string>
 

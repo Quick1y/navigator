@@ -20,7 +20,6 @@ public class MySpinnerAdapter extends BaseAdapter {
 
     private ArrayList<ISpinnerItem> mItemList;
     private LayoutInflater mInflater;
-    private String mFirstName;
 
 
     //принемает только листы объектов, реализующих интерфейс ISpinnerItem
@@ -33,7 +32,6 @@ public class MySpinnerAdapter extends BaseAdapter {
 
         mItemList = list;
         mInflater = inflater;
-        mFirstName = firstName;
     }
 
     @Override

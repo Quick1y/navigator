@@ -51,6 +51,7 @@ import com.geo.navigator.Utils.MyJSONParser;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private static final String TAG = "RouteActivity";
@@ -70,7 +71,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private TextView mWhereAreYouTextView;
     private ImageButton mUpdateSpinButton;
     private AlertDialog adLoading;
-    private BottomSheetBehavior bottomSheetBehavior;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     private LinearLayout mHintQrScanLayout;
     private RelativeLayout mHintLayout;
@@ -217,8 +218,8 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
     @Override // нажата кнопка Back
     public void onBackPressed() {
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             super.onBackPressed();
         }
@@ -261,7 +262,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         mWhereAreYouTextView.setText(mStartPoint.getDescription());
 
         String messToast = getString(R.string.activity_route_location_ok);
-        Toast.makeText(this, messToast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, messToast, Toast.LENGTH_LONG).show();
 
     }
 
@@ -272,7 +273,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         WayFinder wf = new WayFinder(edges);
         mFinishPoint = MyDatabaseProvider.getPoint(this, mSimpleFinishPoint.getId());
 
-        hideHint(); // по дефолту лучше убрать
+        hideHint(); // по дефолту лучше убрать подсказку
 
         if (mFinishPoint == null) {  //если такой точки нет, то качаем карту
             showAlertDownloadMap(mSimpleFinishPoint.getMapId(), ITS_FINISH_MAP);
@@ -303,8 +304,11 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
                 mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
 
-                String dest = getString(R.string.activity_route_hint_follow_to) + " на " + finishMap.getDescription();
-                showHint(dest);
+                String dest = String.format(Locale.US,
+                        getString(R.string.activity_route_hint_follow_to),
+                        finishMap.getDescription());
+
+                showHint(dest); // показываем подсказку
             } else {
                 //ведем к выходу
                 Point[] exitPoints = MyDatabaseProvider.getPointsByMeta(this, mCurrentMap.getId(), Point.META_EXIT);
@@ -319,7 +323,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                     int nearestPointId = wf.getNearestPoint(mStartPoint.getId(), pointsId);
                     mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
 
-                    String dest = getString(R.string.activity_route_hint_follow_to) + " к Выходу";
+                    String dest = getString(R.string.activity_route_hint_follow_to_exit);
                     showHint(dest);
 
                 } else {   //если выхода на этой карте нет, то ведем к лестнице
@@ -341,7 +345,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                     int nearestPointId = wf.getNearestPoint(mStartPoint.getId(), pointsId);
                     mFinishPoint = MyDatabaseProvider.getPoint(this, nearestPointId);
 
-                    String dest = getString(R.string.activity_route_hint_follow_to) + " к Выходу";
+                    String dest = getString(R.string.activity_route_hint_follow_to_exit);
                     showHint(dest);
                 }
 
@@ -371,11 +375,13 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     //рисует путь и отправляет его на экран
     private void drawWay(ArrayList<Point> pointsList) {
         Bitmap mapBitmap = FileHelper.readImage(getApplicationContext(), mCurrentMap.getImagePath());
-        int sizePx = mapBitmap.getHeight(); // получаем размер (она все равно квадратная)
+        int sizePx = mapBitmap.getHeight(); // получаем размер картинки (она все равно квадратная)
 
         mWayBitmap = DrawHelper.drawWay(pointsList, this, sizePx);
         mWayBitmap = scaleBitmap(mWayBitmap); // увеличиваем битмап в соответствии с разрешением пользователя
         mImageViewDrawing.setImageBitmap(mWayBitmap);
+
+        hideBottomSheet();
     }
 
 
@@ -426,7 +432,6 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     }
 
     //показывает алерт "Ошибка загрузки"
-
     private void showNetworkDisAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.alert_network_title)
@@ -478,12 +483,12 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     private void initUI() {
 
         //это все для floating action button и выезжающего снизу лейаута
-        LinearLayout llBottomSheet = (LinearLayout) findViewById(R.id.content_route);
-        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.content_route);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         //скрываем кнопку при разворачивании bottom sheet
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (BottomSheetBehavior.STATE_EXPANDED == newState) {
@@ -503,7 +508,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 fab.animate().scaleX(0).scaleY(0).setDuration(100).start();
             }
         });
@@ -546,7 +551,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
                     ArrayList<Point> way = findWay();
                     if (way != null) {
                         drawWay(way);
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     }
                 } else {
                     Toast.makeText(getBaseContext(),
@@ -631,7 +636,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             }
         }.execute();
 
-        /* Ниже листенеры, которые устранавливают адаптер в нижележащий спиннер в соответствии с
+        /** Ниже листенеры, которые устранавливают адаптер в нижележащий спиннер в соответствии с
         * выбранным значением в данном спиннере. Т.к при повороте экрана все равно данные о выбранном пункте
         * спиннера потеряются, то ничего страшного, что это асинки. Ну разве что из-за них могут быть
         * утечки контекста, но это же ерунда, правда? */
@@ -772,8 +777,16 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
     }
 
 
+    //скрывает BottomSheet
+    private void hideBottomSheet(){
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+
     //показывает подсказку сверху
     private void showHint(String dest) {
+        if(mHintLayout.getVisibility() == View.VISIBLE) return;
+
         TextView tv = (TextView) findViewById(R.id.route_hint_destination);
         tv.setText(dest);
 
@@ -784,6 +797,8 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
     //скрывает подсказку сверху
     private void hideHint() {
+        if(mHintLayout.getVisibility() == View.GONE) return;
+
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.route_hint_anim_hide);
         mHintLayout.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -801,7 +816,6 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
             }
         });
     }
-
 
     //отправляет статитстику по посещениям точки
     private void sendStatistic(final int pointsId[]) {
@@ -825,6 +839,7 @@ public class RouteActivity extends AppCompatActivity implements IMapDownloaded {
 
     }
 
+    //увеличивает картинку в соответсвии с dpi устройства (масштаб задается в values/dimens)
     private Bitmap scaleBitmap(Bitmap bitmap) {
         if (bitmap == null) {
             String mess = getString(R.string.activity_route_read_error);

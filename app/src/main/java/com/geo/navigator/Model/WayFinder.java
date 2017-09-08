@@ -11,6 +11,9 @@ import java.util.Map;
  * <p>
  * Подробнее об используемом алгоритме можно почитать здесь:
  * http://old.exponenta.ru/soft/mathcad/stud25/index.asp
+ *
+ * Переменные так странно называются потому, что просто переписал прогу с Маткада,
+ * которая дана по сслыке выше
  */
 public class WayFinder {
     private static final String TAG = "WayFinder";
@@ -67,7 +70,7 @@ public class WayFinder {
 
 
     /**
-     * Возвращает id блихжайшей лестницы
+     * Возвращает id близжайшей лестницы
      */
     public int getNearestPoint(int id_point, int[] id_points) {
         int numA = mPointsNumbers.get(id_point); // получаем номер стартовой точки
